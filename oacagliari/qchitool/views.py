@@ -594,6 +594,13 @@ def octopus_import_file_info(request, URL_FOR_MOLECULE_FILES, PATH_FOR_MOLECULE_
                                                                       parsing_result, 
                                                                       session_path)
     
+    if calculation_object is None:
+        t = loader.get_template("nwc_import/errorpage.html")
+        c = Context({"message": "Error on execute nwchem"
+                     })
+        c.update(csrf(request))
+        return HttpResponse(t.render(c))
+
     molecule = None
     #last_molecular_species = None
     calculation_found = False

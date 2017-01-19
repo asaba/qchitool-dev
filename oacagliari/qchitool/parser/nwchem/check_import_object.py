@@ -98,9 +98,14 @@ def create_human_readable_database_file(restart_name, session_path):
                                "task rtdbprint"])
     new_input_file.close()
     #2. execute nwchem with new input file and save the output in a new database output file
-    args = shlex.split(commons.nwchem_bin_path + " " + new_input_file_name)
-    subprocess.call(args, stdout = new_output_file)
-    new_output_file.close()        
+    try:
+        args = shlex.split(commons.nwchem_bin_path + " " + new_input_file_name)
+        subprocess.call(args, stdout = new_output_file)
+        new_output_file.close()
+    except:
+        new_output_file.close()
+        return ""
+
     return new_output_database_file_name
 
 
@@ -403,9 +408,12 @@ def build_calculation_object(original_output_file, out_file, inp_file, db_file, 
             human_readable_database_file_name = db_file
         else:
             human_readable_database_file_name = create_human_readable_database_file(section_JobInformation.section_object.values["prefix"], session_path_tmp)
-            dbfile = open(human_readable_database_file_name, "r")
-            dbfilecontent = dbfile.read()
-            dbfile.close()
+            if human_readable_database_file_name:
+                dbfile = open(human_readable_database_file_name, "r")
+                dbfilecontent = dbfile.read()
+                dbfile.close()
+            else:
+                return None
         
 
 
@@ -687,7 +695,10 @@ def return_parsed_object_for_session(outputfile, uploaded_output_file, uploaded_
                                                                       parsing(uploaded_output_file, True, "NwChemOutput"), 
                                                                       session_path,
                                                                       is_dbfile_humanreadable)
-    
+
+    if result["calculation_object"] is None:
+        return None
+
     #last_molecular_species = None
     result["calculation_found"] = False
     result["calculation_found_tasks_list"] = None

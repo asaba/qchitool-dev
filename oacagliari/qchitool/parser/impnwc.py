@@ -204,15 +204,15 @@ def parsing(filename, load_file_in_memory, filetype):
             Current_row_index += 1
 
         f.close()
-        
-    sections_found[-1].section_final_line = Current_row_index # - 1
+    if len(sections_found)>0:
+        sections_found[-1].section_final_line = Current_row_index # - 1
 
-    if len(sections_found[-1].list_of_subsections)>0:
-        if sections_found[-1].list_of_subsections[-1].section_final_line == 0:
-            sections_found[-1].list_of_subsections[-1].section_final_line= Current_row_index #- 1
-        if len(sections_found[-1].list_of_subsections[-1].list_of_subsections)>0:
-            if sections_found[-1].list_of_subsections[-1].list_of_subsections[-1].section_final_line == 0:
-                sections_found[-1].list_of_subsections[-1].list_of_subsections[-1].section_final_line = Current_row_index # - 1
+        if len(sections_found[-1].list_of_subsections)>0:
+            if sections_found[-1].list_of_subsections[-1].section_final_line == 0:
+                sections_found[-1].list_of_subsections[-1].section_final_line= Current_row_index #- 1
+            if len(sections_found[-1].list_of_subsections[-1].list_of_subsections)>0:
+                if sections_found[-1].list_of_subsections[-1].list_of_subsections[-1].section_final_line == 0:
+                    sections_found[-1].list_of_subsections[-1].list_of_subsections[-1].section_final_line = Current_row_index # - 1
 
     set_final_information_line(sections_found)
 
