@@ -1,0 +1,23 @@
+{% if last_mol %}
+<h1>Last {{ last_mol.inchi }} in database </h1>
+	<p>Name: {{ last_mol.name }}</p>
+	<p>Formula: {{ last_mol.formula }}</p>
+	<p>Inchi: {{ last_mol.inchi }}</p>
+	<p>InchiKey: {{ last_mol.inchikey }}</p>
+	<p>Aromatic Cycles: {{ new_mol.aromatic_cycles }}</p>
+	<p>Quality Index: {{ new_mol.qual_index }}</p>
+	<p>Time Stamp: {{ new_mol.time_stamp }}</p>
+{% endif %}
+<h1>New Molecular Species</h1>
+
+{% if form %}
+<form action="/nwc_import/molecular_species/save/" method="post">{% csrf_token %}
+	<table>
+	{{form.as_table}}
+	</table>
+	<input type="submit" name = "selected_action" value="Cancel">
+	<input type="submit" name = "selected_action" value="Save">
+</form>
+{% else %}
+	<p>Error: No value passed</p>
+{% endif %}

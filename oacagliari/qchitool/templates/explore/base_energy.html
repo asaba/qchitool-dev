@@ -1,0 +1,386 @@
+{% extends "explore/base_electronicstate.html" %}
+{% block electronictstate %}
+<div class="electronicstate">
+	<div class="electronicstatehead">
+		<div class="mytablerow">
+			<span class="mytablecell4">
+				<P class="body_text"><B>Energy<br>({{energyunit}})</B><br>{{es.total_energy|floatformat:roundto}}</P>
+			</span>
+			<span class="mytablecell4">
+				<P class="body_text"><B>Description</B><br>{% if es.description %}{{es.description}}{% else %}-{% endif %}</P>
+			</span>
+			<span class="mytablecell4">
+				<P class="body_text"><B>Multiplicity</B><br>{{es.multiplicity}}</P>
+			</span>
+			<span class="mytablecell4">
+				<P class="body_text"><B>Is Minimum</B><br>{{es.is_minimum|yesno}}</P>
+			</span>
+		</div>        
+
+		<div class="mytablerow">
+			<span class="mytablecell3">
+				<P class="body_text"><B>Symmetry</B><br>{% if es.symmetry %}{{es.symmetry}}{% else %}-{% endif %}</P>
+			</span>
+			<span class="mytablecell3">
+				<P class="body_text"><B>Theory Level</B><br>{{es.task.thlevel.name}}
+					{% if  es.task.thlevel.xcclass.name %}
+						- {{es.task.thlevel.xcclass.name}}
+					{% endif%}
+					</P>
+			</span>
+			<span class="mytablecell3">
+				<P class="body_text"><B>Element<br>
+				and<br>
+				Basis Sets</B><br><a href="/database/elementbasissets/{{molecule.pk}}/{{es.pk}}/{{es.task.pk}}/">{{es.basissetshort}}</a></P>
+			</span>
+		</div>
+	</div>
+	<div class="electronicstatebody">		
+		{% if  es.geom.sym_group or es.geom.sym_elements %}
+			<div class="mytablerow">
+				<span class="mytablecell2">
+					<P class="body_text"><B>Symmetry Group</B><br>{{es.geom.sym_group}}</P>
+				</span>
+				<span class="mytablecell2">
+					<P class="body_text"><B>Symmetry Elements</B><br>{{es.geom.sym_elements}}</P>
+				</span>
+			</div>
+		{% endif %}
+		{% if es.rotationalconstants_set.count %}
+			<div class="mytablerow">
+				<span class="mytablecell1">
+					<P class="body_text"><B>Rotational Constants</B></P>
+				</span>
+			</div>
+			<div class="mytablerow">
+				{% if  es.rotationalconstants_set.all.0.wilson_dj or es.rotationalconstants_set.all.0.wilson_djk or es.rotationalconstants_set.all.0.wilson_dk %}
+					<span class="mytablecell6">
+						<b>a<br>({{rotationalunit}})</b><br>{{es.rotationalconstants_set.all.0.a|floatformat:roundto}}
+					</span>
+					<span class="mytablecell6">
+						<b>b<br>({{rotationalunit}})</b><br>{{es.rotationalconstants_set.all.0.b|floatformat:roundto}}
+					</span>
+					<span class="mytablecell6">
+						<b>c<br>({{rotationalunit}})</b><br>{{es.rotationalconstants_set.all.0.c|floatformat:roundto}}
+					</span>
+					
+					<span class="mytablecell6">
+						<b>wilson<br>dj</b><br>{{es.rotationalconstants_set.all.0.wilson_dj|floatformat:roundto}}
+					</span>
+					<span class="mytablecell6">
+						<b>wilson<br>djk</b><br>{{es.rotationalconstants_set.all.0.wilson_djk|floatformat:roundto}}
+					</span>
+					<span class="mytablecell6">
+						<b>wilson<br>dk</b><br>{{es.rotationalconstants_set.all.0.wilson_dk|floatformat:roundto}}
+					</span>
+				{% else %}
+					<span class="mytablecell3">
+						<b>a<br>({{rotationalunit}})</b><br>{{es.rotationalconstants_set.all.0.a|floatformat:roundto}}
+					</span>
+					<span class="mytablecell3">
+						<b>b<br>({{rotationalunit}})</b><br>{{es.rotationalconstants_set.all.0.b|floatformat:roundto}}
+					</span>
+					<span class="mytablecell3">
+						<b>c<br>({{rotationalunit}})</b><br>{{es.rotationalconstants_set.all.0.c|floatformat:roundto}}
+					</span>
+				{% endif %}
+			</div>
+			{% if es.rotationalconstants_set.all.0.nielsen_dj or es.rotationalconstants_set.all.0.nielsen_djk or es.rotationalconstants_set.all.0.nielsen_dk or es.rotationalconstants_set.all.0.nielsen_d_j or es.rotationalconstants_set.all.0.nielsen_r5 or es.rotationalconstants_set.all.0.nielsen_r6 %}
+				<div class="mytablerow">
+					<span class="mytablecell6">
+						<b>nielsen<br>dj</b><br>{{es.rotationalconstants_set.all.0.nielsen_dj|floatformat:roundto}}
+					</span>
+					<span class="mytablecell6">
+						<b>nielsen<br>djk</b><br>{{es.rotationalconstants_set.all.0.nielsen_djk|floatformat:roundto}}
+					</span>
+					<span class="mytablecell6">
+						<b>nielsen<br>dk</b><br>{{es.rotationalconstants_set.all.0.nielsen_dk|floatformat:roundto}}
+					</span>
+					<span class="mytablecell6">
+						<b>nielsen<br>d_j</b><br>{{es.rotationalconstants_set.all.0.nielsen_d_j|floatformat:roundto}}
+					</span>
+					<span class="mytablecell6">
+						<b>nielsen<br>r5</b><br>{{es.rotationalconstants_set.all.0.nielsen_r5|floatformat:roundto}}
+					</span>
+					<span class="mytablecell6">
+						<b>nielsen<br>r6</b><br>{{es.rotationalconstants_set.all.0.nielsen_r6|floatformat:roundto}}
+					</span>
+				</div>
+			{% endif %}
+		{% endif %}
+		{% if es.dipolemoments_set.count %}
+			<div class="mytablerow">
+				<span class="mytablecell4">
+					<P class="body_text"><B>Dipole Moments</B></P>
+				</span>
+				<span class="mytablecell4">
+							<b>mu_x<br>({{muunit}})</b><br> {{es.dipolemoments_set.all.0.mu_x|floatformat:roundto}}
+				</span>
+				<span class="mytablecell4">
+					<b>mu_y<br>({{muunit}})</b><br> {{es.dipolemoments_set.all.0.mu_y|floatformat:roundto}}
+				</span>
+				<span class="mytablecell4">
+					<b>mu_z<br>({{muunit}})</b><br> {{es.dipolemoments_set.all.0.mu_z|floatformat:roundto}}
+				</span>
+			</div>
+		{% endif %}
+		{% if es.vibrationalanalysesharmonic_set.count or es.vibrationalanalysesanarmonic_set.count %}
+			<div class="mytablerow">
+				<span class="mytablecell4">
+					<P class="body_text"><B>Vibration Analisys</B></P>
+				</span>
+				<span class="mytablecell75">
+					<P class="body_text">Harmonic: 
+						{% if es.vibrationalanalysesharmonic_set.count %}
+							<a href="/database/vibrationalanalysesharmonic/{{molecule.pk}}/{{es.pk}}/">link</a>
+						{% else %}
+							None
+						{% endif%}
+						<br>Anharmonic: 
+						{% if es.vibrationalanalysesanarmonic_set.count %}
+							<a href="/database/vibrationalanalysesanarmonic/{{molecule.pk}}/{{es.pk}}/">link</a>
+						{% else %}
+							None
+						{% endif%}
+					</P>
+				</span>
+			</div>
+		{% endif %}
+		{% if es.startionisationenergies  %} 
+			<div class="mytablerow">
+				<span class="mytablecell4">
+					<P class="body_text"><B>Ionisation Energies</B></P>
+				</span>
+				<span class="mytablecell75">
+					<P class="body_text">
+						{% for ie in es.startionisationenergies %}
+							<a href="/database/ionisationenergies/{{molecule.pk}}/{{es.pk}}/{{ie.pk}}/">{{ie.iontype.comments}} {{ie.energy|floatformat:roundto}} {{energyunit}} <span>Charge: {{ie.ion_state.species.charge}}; Multiplicity: {{ie.ion_state.multiplicity}}</span> </a>
+							<BR>
+						{% endfor %}
+					</P>
+				</span>
+			</div>
+		{% endif %}
+		{% if es.electronictransitions_set.count %}
+			<div class="mytablerow">
+				<span class="mytablecell4">
+					<P class="body_text"><B>Electronic Transitions</B></P>
+				</span>
+				<span class="mytablecell75">
+					<P class="body_text"><BR>
+					</P>
+				</span>
+			</div>
+		{% endif %}
+		{% if es.polarisabilities_set.count %}
+			<div class="mytablerow">
+				<span class="mytablecell4">
+					<P class="body_text"><B>Polarisabilities</B></P>
+				</span>
+				<span class="mytablecell75">
+					<P class="body_text"><BR>
+					</P>
+				</span>
+			</div>
+		{% endif %}
+	</div>
+</div>	
+{% if es.basissets %}
+		<div class="electronicstate">
+		<div class="mytablerow">
+			<span class="mytablecell3">
+				<P class="body_text">#</P>
+			</span>
+			<span class="mytablecell3">
+				<P class="body_text"><B>Atom</B></P>
+			</span>
+			<span class="mytablecell3">
+				<P class="body_text"><b>Basis Sets</b></P>
+			</span>
+		</div> 
+			{% for especiesbs in es.basissets %}
+				{% block basissetelement %}{% endblock basissetelement %}
+			{% endfor %}
+		</div>		
+{% endif %}
+{% if es.vibrationalanalysesharmonics %}
+	<P class="body_text"><b>Vibration Analisis Harmonic</b></P>
+	{% for va in es.vibrationalanalysesharmonics %}
+		{% if va.vibrationsgroup %}
+			{% for rowtab in va.vibrationsgroup %}
+				{% block vibration %}{% endblock vibration %}
+			{% endfor %}
+		{% else %}
+			<P class="body_text"><b>Vibrations not found.</b></P>
+		{% endif %}
+	{% endfor %}
+{% endif %}
+
+{% endblock electronictstate %}
+{% block ionisationenergy %}
+<div class="electronicstate">
+	<div class="mytablerow">
+		<span class="mytablecell4">
+			<P class="body_text"><B>Energy<br>({{energyunit}})</B><br>{{esie.ion_state.total_energy|floatformat:roundto}}</P>
+		</span>
+		<span class="mytablecell4">
+			<P class="body_text"><B>Description</B><br>{{esie.ion_state.description}}</P>
+		</span>
+		<span class="mytablecell4">
+			<P class="body_text"><B>Multiplicity</B><br>{{esie.ion_state.multiplicity}}</P>
+		</span>
+		<span class="mytablecell4">
+			<P class="body_text"><B>Is Minimum</B><br>{{esie.ion_state.is_minimum|yesno}}</P>
+		</span>
+	</div>        
+	<div class="mytablerow">
+		<span class="mytablecell3">
+			<P class="body_text"><B>Symmetry</B><br>{{esie.ion_state.symmetry}}</P>
+		</span>
+		<span class="mytablecell3">
+				<P class="body_text"><B>Theory Level</B><br>{{esie.task.thlevel.name}}
+					{% if  esie.task.thlevel.xcclass.name %}
+						- {{esie.task.thlevel.xcclass.name}}
+					{% endif%}
+					</P>
+			</span>
+		<span class="mytablecell3">
+			<P class="body_text"><B>Element<br>
+			and<br>
+			Basis Sets</B><br><a href="/database/elementbasissets/{{molecule.pk}}/{{esie.ion_state.pk}}/{{esie.ion_state.task.pk}}/">{{esie.ion_state.basissetshort}}</a></P>
+		</span>
+	</div>
+	{% if  esie.ion_state.geom.sym_group or esie.ion_state.geom.sym_elements %}
+		<div class="mytablerow">
+			<span class="mytablecell2">
+				<P class="body_text"><B>Symmetry Group</B><br>{{esie.ion_state.geom.sym_group}}</P>
+			</span>
+			<span class="mytablecell2">
+				<P class="body_text"><B>Symmetry Elements</B><br>{{esie.ion_state.geom.sym_elements}}</P>
+			</span>
+		</div>
+	{% endif %}
+	{% if esie.ion_state.rotationalconstants_set.count %}
+		<div class="mytablerow">
+			<span class="mytablecell1">
+				<P class="body_text"><B>Rotational Constants</B></P>
+			</span>
+		</div>
+		<div class="mytablerow">
+			<span class="mytablecell6">
+				<b>a<br>({{rotationalunit}})</b><br>{{esie.ion_state.rotationalconstants_set.all.0.a|floatformat:roundto}}
+			</span>
+			<span class="mytablecell6">
+				<b>b<br>({{rotationalunit}})</b><br>{{esie.ion_state.rotationalconstants_set.all.0.b|floatformat:roundto}}
+			</span>
+			<span class="mytablecell6">
+				<b>c<br>({{rotationalunit}})</b><br>{{esie.ion_state.rotationalconstants_set.all.0.c|floatformat:roundto}}
+			</span>
+			<span class="mytablecell6">
+				<b>wilson<br>dj</b><br>{{esie.ion_state.rotationalconstants_set.all.0.wilson_dj|floatformat:roundto}}
+			</span>
+			<span class="mytablecell6">
+				<b>wilson<br>djk</b><br>{{esie.ion_state.rotationalconstants_set.all.0.wilson_djk|floatformat:roundto}}
+			</span>
+			<span class="mytablecell6">
+				<b>wilson<br>dk</b><br>{{esie.ion_state.rotationalconstants_set.all.0.wilson_dk|floatformat:roundto}}
+			</span>
+		</div>
+		<div class="mytablerow">
+			<span class="mytablecell6">
+				<b>nielsen<br>dj</b><br>{{esie.ion_state.rotationalconstants_set.all.0.nielsen_dj|floatformat:roundto}}
+			</span>
+			<span class="mytablecell6">
+				<b>nielsen<br>djk</b><br>{{esie.ion_state.rotationalconstants_set.all.0.nielsen_djk|floatformat:roundto}}
+			</span>
+			<span class="mytablecell6">
+				<b>nielsen<br>dk</b><br>{{esie.ion_state.rotationalconstants_set.all.0.nielsen_dk|floatformat:roundto}}
+			</span>
+			<span class="mytablecell6">
+				<b>nielsen<br>d_j</b><br>{{esie.ion_state.rotationalconstants_set.all.0.nielsen_d_j|floatformat:roundto}}
+			</span>
+			<span class="mytablecell6">
+				<b>nielsen<br>r5</b><br>{{esie.ion_state.rotationalconstants_set.all.0.nielsen_r5|floatformat:roundto}}
+			</span>
+			<span class="mytablecell6">
+				<b>nielsen<br>r6</b><br>{{esie.ion_state.rotationalconstants_set.all.0.nielsen_r6|floatformat:roundto}}
+			</span>
+		</div>
+	{% endif %}
+	{% if esie.ion_state.dipolemoments_set.count %}
+		<div class="mytablerow">
+			<span class="mytablecell4">
+				<P class="body_text"><B>Dipole Moments</B></P>
+			</span>
+			<span class="mytablecell4">
+						<b>mu_x<br>({{muunit}})</b><br> {{esie.ion_state.dipolemoments_set.all.0.mu_x|floatformat:roundto}}
+			</span>
+			<span class="mytablecell4">
+				<b>mu_y<br>({{muunit}})</b><br> {{esie.ion_state.dipolemoments_set.all.0.mu_y|floatformat:roundto}}
+			</span>
+			<span class="mytablecell4">
+				<b>mu_z<br>({{muunit}})</b><br> {{esie.ion_state.dipolemoments_set.all.0.mu_z|floatformat:roundto}}
+			</span>
+		</div>
+	{% endif %}
+	{% if esie.ion_state.vibrationalanalysesharmonic_set.count or esie.ion_state.vibrationalanalysesanarmonic_set.count %}
+		<div class="mytablerow">
+			<span class="mytablecell4">
+				<P class="body_text"><B>Vibration Analisys</B></P>
+			</span>
+			<span class="mytablecell75">
+				<P class="body_text">Harmonic: 
+					{% if esie.ion_state.vibrationalanalysesharmonic_set.count %}
+						<a href="/database/vibrationalanalysesharmonic/{{molecule.pk}}/{{esie.ion_state.pk}}/">link</a>
+					{% else %}
+						None
+					{% endif%}
+					<br>Anharmonic: 
+					{% if esie.ion_state.vibrationalanalysesanarmonic_set.count %}
+						<a href="/database/vibrationalanalysesanarmonic/{{molecule.pk}}/{{esie.ion_state.pk}}/">link</a>
+					{% else %}
+						None
+					{% endif%}
+				</P>
+			</span>
+		</div>
+	{% endif %}
+	{% if esie.ion_state.startionisationenergies  %} 
+		<div class="mytablerow">
+			<span class="mytablecell4">
+				<P class="body_text"><B>Ionisation Energies</B></P>
+			</span>
+			<span class="mytablecell75">
+				<P class="body_text">
+					{% for ie in esie.ion_state.startionisationenergies %}
+						<a href="/database/ionisationenergies/{{molecule.pk}}/{{esie.ion_state.pk}}/{{ie.pk}}/">{{ie.iontype.comments}}  {{ie.energy|floatformat:roundto}} {{energyunit}} <span>Charge: {{ie.ion_state.species.charge}}; Multiplicity: {{ie.ion_state.multiplicity}}</span> </a>
+						<BR>
+					{% endfor %}
+				</P>
+			</span>
+		</div>
+	{% endif %}
+	{% if esie.ion_state.electronictransitions_set.count %}
+		<div class="mytablerow">
+			<span class="mytablecell4">
+				<P class="body_text"><B>Electronic Transitions</B></P>
+			</span>
+			<span class="mytablecell75">
+				<P class="body_text"><BR>
+				</P>
+			</span>
+		</div>
+	{% endif %}
+	{% if esie.ion_state.polarisabilities_set.count %}
+		<div class="mytablerow">
+			<span class="mytablecell4">
+				<P class="body_text"><B>Polarisabilities</B></P>
+			</span>
+			<span class="mytablecell75">
+				<P class="body_text"><BR>
+				</P>
+			</span>
+		</div>
+	{% endif %}
+</div>
+{% endblock ionisationenergy %}

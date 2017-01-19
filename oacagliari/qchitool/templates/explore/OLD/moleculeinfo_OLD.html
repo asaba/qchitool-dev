@@ -1,0 +1,194 @@
+{% extends "explore/base.html" %}
+{% block title %}
+	{{molecule.name}} ({{molecule.formula}})	
+{% endblock %}
+{% block subtitle %}General Molecule Info{% endblock %}
+{% block content %}
+<div id="contenttext">
+	<p class="body_text" align="justify">
+		{% for m in molecules %}
+			<p  class="body_text" >Charge: {{m.charge}}</p>
+			<p  class="body_text" >Inchi: {{m.inchi}}</p>
+			{% if m.comments %}
+				<p class="body_text" >Description: {{m.comments}}</p>
+			{% endif %}
+			{% if m.electronicstates %}
+				<p class="body_text" > No electronic states</p>
+			{% else %}
+				<p class="body_text" >Electronic States</p>
+					<p class="body_text" ><table border="1">
+					<tr>
+					<th>n.</th>
+					<th>Energy</th>
+					<th>Sym.</th>
+					<th>Mult.</th>
+					<th>Descr.</th>
+					<th>Min.</th>
+					<th>Theory level</th>
+					<th>XC</th>
+					<th>Elements and Basis Sets</th>
+					<th>V.A. Anar.</th>
+					<th>V.A. Har.</th>
+					<th>Ion. Energ.</th>
+					</tr>
+					{% for es in m.estmp %}
+						<tr>
+						<td>{{forloop.counter}}</td>
+						<td>{{es.total_energy|floatformat:roundto}}</td>
+						<td>{{es.symmetry}}</td>
+						<td>{{es.multiplicity}}</td>
+						<td>{{es.description}}</td>
+						<td>{{es.is_minimum|yesno}}</td>
+						<td>{{es.task.thlevel.name}}</td>
+						<td>{{es.task.thlevel.xcclass.name}}</td>
+						<td><a href="/database/elementbasissets/{{molecule.pk}}/{{es.task.pk}}/">{{es.basissetshort}}</a></td>
+						<td>{% if es.vibrationalanalysesanarmonic_set.count %}
+								<a href="/database/vibrationalanalysesanarmonic/{{molecule.pk}}/{{es.pk}}/">link</a>
+							{% else %}
+								None
+							{% endif%}</td>
+						<td>{% if es.vibrationalanalysesharmonic_set.count %}
+								<a href="/database/vibrationalanalysesharmonic/{{molecule.pk}}/{{es.pk}}/">link</a>
+							{% else %}
+								None
+							{% endif%}
+						</td>
+						<td>{% if es.startionisationenergies  %} 
+							<table>
+								{% for ie in es.startionisationenergies %}
+									<tr>
+										<td><a href="/database/ionisationenergies/{{molecule.pk}}/{{ie.pk}}/">{{ie.iontype.description}}</a></td>
+									</tr>
+									<tr>
+										<td>Chrg: {{ie.ion_state.species.charge}}</td>
+									</tr>
+									<tr>
+										<td>Mult: {{ie.ion_state.multiplicity}}</td>
+									</tr>
+								{% endfor %}
+							</table>
+						    {% else %}
+						    	None
+						    {% endif %}
+						</td>    
+						</tr>
+					{% endfor %}
+				</table>
+				</p>
+				<p>
+				{% for es in m.estmp %}
+						<div class="electronicstate">
+						<div class="singleesdata"><b>Energy</b></div><br> {{es.total_energy|floatformat:roundto}}</div>
+						<div class="singleesdata"><b>Symmetry</b><br> {% if es.symmetry %}{{es.symmetry}}{% else %} N {% endif %}</div>
+						<div class="singleesdata"><b>Multiplicity</b><br> {% if es.multiplicity %}{{es.multiplicity}}{% else %} N {% endif %}</div>
+						<div class="singleesdata"><b>Description</b><br> {% if es.description %}{{es.description}}{% else %} N {% endif %}</div>
+						<div class="singleesdata"><b>Minimum</b><br> {{es.is_minimum|yesno}}</div>
+						<br><br>
+						<div class="singleesdata"><b>Theory Level</b><br> {% if es.task.thlevel.name %}{{es.task.thlevel.name}}{% else %} N {% endif %}</div>
+						<div class="singleesdata"><b>XC</b><br> {% if es.task.thlevel.xcclass.name %}{{es.task.thlevel.xcclass.name}}{% else %} N {% endif %}</div>
+						<div class="singleesdata"><b>Elements and Basis Sets</b><br> <a href="/database/elementbasissets/{{molecule.pk}}/{{es.task.pk}}/">{{es.basissetshort}}</a></div>
+						<div class="singleesdata"><b>Symmetry Group</b><br> {% if es.geometry.sym_group %}{{es.geometry.sym_group}}{% else %} N {% endif %}</div>
+						<div class="singleesdata"><b>Symmetry Elements</b><br> {% if es.geometry.sym_elements %}{{es.geometry.sym_elements}}{% else %} N {% endif %}</div>
+						<br><br>
+						{% if es.rotationalconstants_set.count %}
+						<div class="singleesdata">
+							<b>Rotational Constants</b></div>
+						<div class="singleesdata">
+							<div class="singleesdata3">
+								<b>a</b><br> {% if es.rotationalconstants_set.0.a %}{{es.rotationalconstants_set.0.a}}{% else %} N {% endif %}
+							</div>
+							<div class="singleesdata3">
+								<b>b</b><br> {% if es.rotationalconstants_set.0.b %}{{es.rotationalconstants_set.0.b}}{% else %} N {% endif %}
+							</div>
+							<div class="singleesdata3">
+								<b>c</b><br> {% if es.rotationalconstants_set.0.c %}{{es.rotationalconstants_set.0.c}}{% else %} N {% endif %}
+							</div>
+						</div>
+						<div class="singleesdata">
+							<div class="singleesdata3">
+								<b>wilson_dj</b><br> {% if es.rotationalconstants_set.0.wilson_dj %}{{es.rotationalconstants_set.0.wilson_dj}}{% else %} N {% endif %}
+							</div>
+							<div class="singleesdata3">
+								<b>wilson_djk</b><br> {% if es.rotationalconstants_set.0.wilson_djk %}{{es.rotationalconstants_set.0.wilson_djk}}{% else %} N {% endif %}
+							</div>
+							<div class="singleesdata3">
+								<b>wilson_dk</b><br> {% if es.rotationalconstants_set.0.wilson_dk %}{{es.rotationalconstants_set.0.wilson_dk}}{% else %} N {% endif %}
+							</div>
+						</div>
+						<div class="singleesdata">
+							<div class="singleesdata3">
+								<b>nielsen_dj</b><br> {% if es.rotationalconstants_set.0.nielsen_dj %}{{es.rotationalconstants_set.0.nielsen_dj}}{% else %} N {% endif %}
+							</div>
+							<div class="singleesdata3">
+								<b>nielsen_djk</b><br> {% if es.rotationalconstants_set.0.nielsen_djk %}{{es.rotationalconstants_set.0.nielsen_djk}}{% else %} N {% endif %}
+							</div>
+							<div class="singleesdata3">
+								<b>nielsen_dk</b><br> {% if es.rotationalconstants_set.0.nielsen_dk %}{{es.rotationalconstants_set.0.nielsen_dk}}{% else %} N {% endif %}
+							</div>
+						</div>
+						<div class="singleesdata">
+							<div class="singleesdata3">
+								<b>nielsen_d_j</b><br> {% if es.rotationalconstants_set.0.nielsen_d_j %}{{es.rotationalconstants_set.0.nielsen_d_j}}{% else %} N {% endif %}
+							</div>
+							<div class="singleesdata3">
+								<b>nielsen_r5</b><br> {% if es.rotationalconstants_set.0.nielsen_r5 %}{{es.rotationalconstants_set.0.nielsen_r5}}{% else %} N {% endif %}
+							</div>
+							<div class="singleesdata3">
+								<b>nielsen_r6</b><br> {% if es.rotationalconstants_set.0.nielsen_r6 %}{{es.rotationalconstants_set.0.nielsen_r6}}{% else %} N {% endif %}
+							</div>
+						</div>
+						<br><br>
+						{% endif %}
+						<div class="singleesdata">
+							<b>Electric Dipole Moment</b>
+						</div>
+						<div class="singleesdata">
+							<div class="singleesdata3">
+								<b>mu_x</b><br> {% if es.dipolemoments_set.count %}{{es.dipolemoments_set.0.mu_x}}{% else %}N{% endif %}
+							</div>
+							<div class="singleesdata3">
+								<b>mu_y</b><br> {% if es.dipolemoments_set.count %}{{es.dipolemoments_set.0.mu_y}}{% else %}N{% endif %}
+							</div>
+							<div class="singleesdata3">
+								<b>mu_z</b><br> {% if es.dipolemoments_set.count %}{{es.dipolemoments_set.0.mu_z}}{% else %}N{% endif %}
+							</div>
+						</div>
+						<div class="singleesdata4">
+							<b>Vibration Analisys</b>
+						</div>
+						<div class="singleesdata">
+							{% if es.vibrationalanalysesanarmonic_set.count %}
+								<a href="/database/vibrationalanalysesanarmonic/{{molecule.pk}}/{{es.pk}}/">Anharmonic</a>
+							{% else %}
+								None
+							{% endif%}
+							<br>
+							{% if es.vibrationalanalysesharmonic_set.count %}
+								<a href="/database/vibrationalanalysesharmonic/{{molecule.pk}}/{{es.pk}}/">Harmonic</a>
+							{% else %}
+								None
+							{% endif%}
+						</div>
+						<br><br>
+						{% if es.startionisationenergies  %} 
+							<div class="singleesdata4">
+								<b>Ionisation Energies</b>
+							</div>
+							<div class="singleesdata6">
+								{% for ie in es.startionisationenergies %}
+										<a href="/database/ionisationenergies/{{molecule.pk}}/{{ie.pk}}/">{{ie.iontype.comments}} <b>Chrg:</b> {{ie.ion_state.species.charge}} <b>Mult:</b> {{ie.ion_state.multiplicity}}</a>
+										<br>
+
+								{% endfor %}
+						    </div>
+						{% endif %}
+						
+					</div>
+					{% endfor %}
+				</p>
+				
+			{% endif %}
+		{% endfor %}
+	</p>
+</div>
+{% endblock content%}

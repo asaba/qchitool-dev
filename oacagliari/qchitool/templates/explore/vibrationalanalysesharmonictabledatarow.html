@@ -1,0 +1,17 @@
+{% extends "explore/vibrationalanalysesharmonictabledatarow_extends.html" %}
+{% block vector %}
+	<div class="mytablerow">
+		<span class="mytablecell4">
+			<P class="body_text"><B>#</B><br>{{forloop.counter}}</P>
+		</span>
+		<span class="mytablecell4">
+			<P class="body_text"><B>X</B><br>{{v.0|floatformat:roundto}}</P>
+		</span>
+		<span class="mytablecell4">
+			<P class="body_text"><B>Y</B><br>{{v.1|floatformat:roundto}}</P>
+		</span>
+		<span class="mytablecell4">
+			<P class="body_text"><B>Z</B><br>{{v.2|floatformat:roundto}}</P>
+		</span>
+	</div>
+{% endblock vector %}

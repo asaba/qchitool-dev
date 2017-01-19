@@ -1,0 +1,32 @@
+{% extends "explore/base_molecule.html" %}
+{% block molecule %}
+	<div class="molecule">
+		<div class="moleculehead">
+			<P class="body_text"><b>Charge:</b> {{m.charge}}</P>
+			<P class="body_text"><B>Inchi:</B>{{m.inchi}}</P>
+			{% if m.comments %}
+				<p class="body_text" ><b>Description:</b> {{m.comments}}</p>
+			{% endif %}
+		</div>
+		<div class="moleculebody">
+			{% if m.electronicstategroup %}
+				<p class="body_text" >Electronic States</p>
+				{% for es in m.electronicstategroup %}
+					{% if es.ionisationenergy %}
+						<p class="body_text" >Energy From</p>
+					{% endif %}
+					{% block electronictstate %}{% endblock electronictstate %}
+					{% if es.ionisationenergy %}
+						{% for esie in es.ionisationenergy %}
+							<p class="body_text" >Energy To</p>
+							{% block ionisationenergy %}{% endblock ionisationenergy %}
+							<P class="body_text"><B>Energy<br>({{energyunit}})</B><br>{{esie.energy|floatformat:roundto}}</P>
+						{% endfor %}
+					{% endif %}
+				{% endfor %}
+			{% else %}
+				<p class="body_text" > No electronic states</p>
+			{% endif %}
+		</div>
+	</div>
+{% endblock molecule %}

@@ -1,0 +1,30 @@
+{% extends "explore/base.html" %}
+{% block title %}
+	Similar Electronic States to save
+{% endblock %}
+{% block subtitle %}NWChem {{file_name}}{% endblock %}
+{% block jmol %}
+	{% if enable_jmol %}}
+	<script type="text/javascript">
+		jmolInitialize("/jmol/");
+		jmolApplet({{appletsize}}, "load {{URL_FOR_MOLECULE_FILES}}{{task.relative_file_path}}; axes on;");
+	</script>
+	{% endif %}
+{% endblock jmol %}
+{% block content %}
+
+    <div>
+      {% if forms %}
+      	<form action="/nwc_import/save2/" enctype="multipart/form-data" method="post">{% csrf_token %}
+		<table>
+			{% for es in forms %}
+            	<tr><th>Record</th><td><span style="color:red">Electronic State {{forloop.counter0}}</span></td></tr>
+            	{{es}}
+			{% endfor %}
+		</table>
+      {% endif %}
+       <input type="submit" value="Save" />
+	   </form>
+    </div>
+
+{% endblock content %}

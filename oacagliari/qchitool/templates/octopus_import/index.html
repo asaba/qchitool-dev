@@ -1,0 +1,19 @@
+{% block content %}
+  <div class="content">
+    <h1>Import Octopus calculus files</h1>
+    <div class="body">
+      <p>
+      
+        <form action="/octopus_import/file_info/" method="post"
+              enctype="multipart/form-data">{% csrf_token %}
+          <table>
+            {{ expert_form }}
+          </table>
+          <p><input type="checkbox" name="jmol" value="False" /> Enable Jmol applet</p>
+          <p><input type="submit" value="Import" /></p>
+        </form>
+      </p><br />
+      <p>Some helpful text really should go here.</p>
+    </div>
+  </div>
+{% endblock %}

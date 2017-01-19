@@ -1,0 +1,29 @@
+{% extends "explore/base.html" %}
+{% block title %}
+	Import calculus
+{% endblock %}
+{% block subtitle %}NWChem{% endblock %}
+{% block jmol %}
+	<script type="text/javascript">
+		jmolInitialize("/jmol/");
+		jmolApplet({{appletsize}}, "load {{URL_FOR_MOLECULE_FILES}}{{moleculefilename}}; axes on;");
+	</script>
+{% endblock jmol %}
+{% block content %}
+  <div class="content">
+    <div class="body">
+      <p>
+      
+        <form action="/nwc_import/file_info/" method="post"
+              enctype="multipart/form-data">{% csrf_token %}
+          <table>
+            {{ expert_form }}
+          </table>
+          <p><input type="checkbox" name="jmol" value="False" /> Enable Jmol applet</p>
+          <p><input type="submit" value="Import" /></p>
+        </form>
+      </p><br />
+      <p>Some helpful text really should go here.</p>
+    </div>
+  </div>
+{% endblock %}

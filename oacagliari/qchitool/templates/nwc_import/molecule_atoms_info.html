@@ -1,0 +1,51 @@
+{% extends "explore/base.html" %}
+{% block title %}
+	Atoms Info
+{% endblock %}
+{% block subtitle %}NWChem{% endblock %}
+{% block jmol %}
+	{% if enable_jmol %}}
+	<script type="text/javascript">
+		jmolInitialize("/jmol/");
+		jmolApplet({{appletsize}}, "load {{URL_FOR_MOLECULE_FILES}}{{task.relative_file_path}}; axes on;");
+	</script>
+	{% endif %}
+{% endblock jmol %}
+{% block content %}
+
+{% if atoms %}	
+	<hl>
+	{% for atom in atoms %}
+		<li>Index: {{ atom.0.idx }}</li>
+		<li>Atom found in DB
+		{% if atom.1 %}
+			<span style="color:green">Yes - {{atom.1}}</span>
+		{%else%}
+			<span style="color:red">No</span>
+		{%endif%}</li>
+        <ul>
+            <li>Atomic Mass: {{ atom.0.atomicmass }}</li>
+            <li>Atomic Number: {{ atom.0.atomicnum }}</li>
+            {% comment %}<li>Coordinates: {{ atom.coords }}</li>{% endcomment %}
+            <li>Exact Mass: {{ atom.0.exactmass }}</li>
+            {% comment %}<li>Formal Charge: {{ atom.formalcharge }}</li>{% endcomment %}
+            {% comment %}<li>Heavy Valence: {{ atom.heavyvalence }}</li>{% endcomment %}
+            {% comment %}<li>Hetero Valence: {{ atom.heterovalence }}</li>{% endcomment %}
+            {% comment %}<li>Hyb: {{ atom.hyb }}</li>{% endcomment %}
+            {% comment %}<li></li>{% endcomment %}
+            {% comment %}<li>Implicit Valence: {{ atom.implicitvalence }}</li>{% endcomment %}
+            <li>Isotope: {{ atom.0.isotope }}</li>
+            {% comment %}<li>Partial Charge: {{ atom.partialcharge }}</li>{% endcomment %}
+            {% comment %}<li>Spin: {{ atom.spin }}</li>{% endcomment %}
+            <li>Type: {{ atom.0.type }}</li>
+            {% comment %}<li>Valence: {{ atom.valence }}</li>{% endcomment %}
+            {% comment %}<li>Vector: {{ atom.vector }}</li>{% endcomment %}
+        </ul>
+		{% endfor %}
+	</hl>
+{% endif %}
+<A HREF="javascript:history.go(-1)">
+Return to calculi Info
+</A>
+
+{% endblock content %}

@@ -1,0 +1,23 @@
+{% extends "explore/base.html" %}
+{% block title %}
+	Bug Fix Utility
+{% endblock %}
+{% block subtitle %}-{% endblock %}
+{% block jmol %}
+	{% if enable_jmol %}}
+	<script type="text/javascript">
+		jmolInitialize("/jmol/");
+		jmolApplet({{appletsize}}, "load {{URL_FOR_MOLECULE_FILES}}{{task.relative_file_path}}; axes on;");
+	</script>
+	{% endif %}
+{% endblock jmol %}
+{% block content %}
+	<ul>
+		<li><a href="/utility/geom">Rebuild Geometries Classes Table</a></li>
+		<li><a href="/utility/functional">Rebuild Functional Classes Table</a></li>
+		<li><a href="/utility/deleteionizationenergy">Delete all ionization energies</a></li>
+		<li><a href="/utility/ionizationenergy">Recalculate ionization energy</a></li>
+		<li><a href="/utility/molecularelements">Rebuild molecular's elements and basis sets</a></li>
+	</ul>
+
+{% endblock %}

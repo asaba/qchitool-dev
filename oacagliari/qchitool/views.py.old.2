@@ -1,0 +1,47 @@
+'''
+Created on 26/ago/2011
+@author: asaba
+'''
+# Create your views here.
+
+import os
+
+from django.contrib.sessions.models import Session
+from django.template import Context, loader, RequestContext
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render_to_response, get_object_or_404
+from django.core.context_processors import csrf
+from django.db import transaction
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
+
+from models import *
+from modelforms import modelforms, build_form
+from modelforms.nwchem import forms
+from tools import qchitool_tools, modeltools
+from parser import impnwc, commonsobjects
+#from parser.nwchem import commons, check_import_object
+from parser.tools import parser_tools
+from version import version
+#from tools.repairtool.nwchem import bugfix 
+from tools import geometry_tools as gt
+from tools.functionals import functional_tools as ft
+from tools.ionizationenergies import ionizationenergies_tools as iet
+import performancetest as pt
+
+
+def explore_index(request, PATH_FOR_MOLECULE_FILES):
+    #if not os.path.exists(PATH_FOR_MOLECULE_FILES):
+    #    os.makedirs(PATH_FOR_MOLECULE_FILES)
+    #currente_session = Session.objects.filter(session_key=request.session.session_key) 
+    #if currente_session:
+    #    currente_session.delete()
+    #logout(request)
+    ##molecules = MolecularSpecies.alive_objects.get_alive_query_set(timecheck = datetime.datetime(year = 2012, month = 6, day = 10)).all().order_by("name")
+    #molecules = MolecularSpecies.alive_objects.all().order_by("name")
+    #molecules.query.group_by = ["name", "formula"]
+    t = loader.get_template("index.html")
+    c = Context({"molecules": None,
+                 "version": version, })
+    c.update(csrf(request))
+    return HttpResponse(t.render(c))

@@ -1,0 +1,14 @@
+{% extends "explore/base_energy.html" %}
+{% block basissetelement %}
+	<div class="mytablerow">
+		<span class="mytablecell3">
+			<P class="body_text">{{forloop.counter}}</P>
+		</span>
+		<span class="mytablecell3">
+			<P class="body_text">{{especiesbs.elementspecies.element}}</P>
+		</span>
+		<span class="mytablecell3">
+			<P class="body_text">{{especiesbs.basisset.name}}</P>
+		</span>
+	</div>  
+{% endblock basissetelement %}

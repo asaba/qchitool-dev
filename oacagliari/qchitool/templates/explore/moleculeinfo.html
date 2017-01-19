@@ -1,0 +1,167 @@
+{% extends "explore/electronicstate.html" %}
+{% block electronictstate %}
+<div class="electronicstate">
+	<div class="mytablerow">
+		<span class="mytablecell4">
+			<P class="body_text"><B>Energy</B><br>{{es.total_energy|floatformat:roundto}}</P>
+		</span>
+		<span class="mytablecell4">
+			<P class="body_text"><B>Description</B><br>{{es.description}}</P>
+		</span>
+		<span class="mytablecell4">
+			<P class="body_text"><B>Multiplicity</B><br>{{es.multiplicity}}</P>
+		</span>
+		<span class="mytablecell4">
+			<P class="body_text"><B>Is Minimum</B><br>{{es.is_minimum|yesno}}</P>
+		</span>
+	</div>        
+	<div class="mytablerow">
+		<span class="mytablecell4">
+			<P class="body_text"><B>Symmetry</B><br>{{es.symmetry}}</P>
+		</span>
+		<span class="mytablecell4">
+			<P class="body_text"><B>Theory Level</B><br>{{es.task.thlevel.name}}</P>
+		</span>
+		<span class="mytablecell4">
+			<P class="body_text"><B>XC</B><br>{{es.task.thlevel.xcclass.name}}</P>
+		</span>
+		<span class="mytablecell4">
+			<P class="body_text"><B>Element<br>
+			and<br>
+			Basis Sets</B><br><a href="/database/elementbasissets/{{molecule.pk}}/{{es.task.pk}}/">{{es.basissetshort}}</a></P>
+		</span>
+	</div>
+	{% if  es.geom.sym_group or es.geom.sym_elements %}
+		<div class="mytablerow">
+			<span class="mytablecell2">
+				<P class="body_text"><B>Symmetry Group</B><br>{{es.geom.sym_group}}</P>
+			</span>
+			<span class="mytablecell2">
+				<P class="body_text"><B>Symmetry Elements</B><br>{{es.geom.sym_elements}}</P>
+			</span>
+		</div>
+	{% endif %}
+	{% if es.rotationalconstants_set.count %}
+		<div class="mytablerow">
+			<span class="mytablecell1">
+				<P class="body_text"><B>Rotational Constants</B></P>
+			</span>
+		</div>
+		<div class="mytablerow">
+			<span class="mytablecell6">
+				<b>a</b><br> {% if es.rotationalconstants_set.0.a %}{{es.rotationalconstants_set.0.a}}{% else %} N {% endif %}
+			</span>
+			<span class="mytablecell6">
+				<b>b</b><br> {% if es.rotationalconstants_set.0.b %}{{es.rotationalconstants_set.0.b}}{% else %} N {% endif %}
+			</span>
+			<span class="mytablecell6">
+				<b>c</b><br> {% if es.rotationalconstants_set.0.c %}{{es.rotationalconstants_set.0.c}}{% else %} N {% endif %}
+			</span>
+			<span class="mytablecell6">
+				<b>wilson<br>dj</b><br> {% if es.rotationalconstants_set.0.wilson_dj %}{{es.rotationalconstants_set.0.wilson_dj}}{% else %} N {% endif %}
+			</span>
+			<span class="mytablecell6">
+				<b>wilson<br>djk</b><br> {% if es.rotationalconstants_set.0.wilson_djk %}{{es.rotationalconstants_set.0.wilson_djk}}{% else %} N {% endif %}
+			</span>
+			<span class="mytablecell6">
+				<b>wilson<br>dk</b><br> {% if es.rotationalconstants_set.0.wilson_dk %}{{es.rotationalconstants_set.0.wilson_dk}}{% else %} N {% endif %}
+			</span>
+		</div>
+		<div class="mytablerow">
+			<span class="mytablecell6">
+				<b>nielsen<br>dj</b><br> {% if es.rotationalconstants_set.0.nielsen_dj %}{{es.rotationalconstants_set.0.nielsen_dj}}{% else %} N {% endif %}
+			</span>
+			<span class="mytablecell6">
+				<b>nielsen<br>djk</b><br> {% if es.rotationalconstants_set.0.nielsen_djk %}{{es.rotationalconstants_set.0.nielsen_djk}}{% else %} N {% endif %}
+			</span>
+			<span class="mytablecell6">
+				<b>nielsen<br>dk</b><br> {% if es.rotationalconstants_set.0.nielsen_dk %}{{es.rotationalconstants_set.0.nielsen_dk}}{% else %} N {% endif %}
+			</span>
+			<span class="mytablecell6">
+				<b>nielsen<br>d_j</b><br> {% if es.rotationalconstants_set.0.nielsen_d_j %}{{es.rotationalconstants_set.0.nielsen_d_j}}{% else %} N {% endif %}
+			</span>
+			<span class="mytablecell6">
+				<b>nielsen<br>r5</b><br> {% if es.rotationalconstants_set.0.nielsen_r5 %}{{es.rotationalconstants_set.0.nielsen_r5}}{% else %} N {% endif %}
+			</span>
+			<span class="mytablecell6">
+				<b>nielsen<br>r6</b><br> {% if es.rotationalconstants_set.0.nielsen_r6 %}{{es.rotationalconstants_set.0.nielsen_r6}}{% else %} N {% endif %}
+			</span>
+		</div>
+	{% endif %}
+	{% if es.dipolemoments_set.count %}
+		<div class="mytablerow">
+			<span class="mytablecell4">
+				<P class="body_text"><B>Dipole Moments</B></P>
+			</span>
+			<span class="mytablecell4">
+						<b>mu_x</b><br> {{es.dipolemoments_set.0.mu_x}}
+			</span>
+			<span class="mytablecell4">
+				<b>mu_y</b><br> {{es.dipolemoments_set.0.mu_y}}
+			</span>
+			<span class="mytablecell4">
+				<b>mu_z</b><br> {{es.dipolemoments_set.0.mu_z}}
+			</span>
+		</div>
+	{% endif %}
+	{% if es.vibrationalanalysesharmonic_set.count or es.vibrationalanalysesanarmonic_set.count %}
+		<div class="mytablerow">
+			<span class="mytablecell4">
+				<P class="body_text"><B>Vibration Analisys</B></P>
+			</span>
+			<span class="mytablecell75">
+				<P class="body_text">Armonic: 
+					{% if es.vibrationalanalysesharmonic_set.count %}
+						<a href="/database/vibrationalanalysesharmonic/{{molecule.pk}}/{{es.pk}}/">link</a>
+					{% else %}
+						None
+					{% endif%}
+					<br>Hanarmonic: 
+					{% if es.vibrationalanalysesanarmonic_set.count %}
+						<a href="/database/vibrationalanalysesanarmonic/{{molecule.pk}}/{{es.pk}}/">link</a>
+					{% else %}
+						None
+					{% endif%}
+				</P>
+			</span>
+		</div>
+	{% endif %}
+	{% if es.startionisationenergies  %} 
+		<div class="mytablerow">
+			<span class="mytablecell4">
+				<P class="body_text"><B>Ionisation Energies</B></P>
+			</span>
+			<span class="mytablecell75">
+				<P class="body_text">
+					{% for ie in es.startionisationenergies %}
+						<a href="/database/ionisationenergies/{{molecule.pk}}/{{ie.pk}}/">{{ie.iontype.comments}} <span>Charge: {{ie.ion_state.species.charge}}; Multiplicity: {{ie.ion_state.multiplicity}}</span> </a>
+						<BR>
+					{% endfor %}
+				</P>
+			</span>
+		</div>
+	{% endif %}
+	{% if es.electronictransitions_set.count %}
+		<div class="mytablerow">
+			<span class="mytablecell4">
+				<P class="body_text"><B>Electronic Transitions</B></P>
+			</span>
+			<span class="mytablecell75">
+				<P class="body_text"><BR>
+				</P>
+			</span>
+		</div>
+	{% endif %}
+	{% if es.polarisabilities_set.count %}
+		<div class="mytablerow">
+			<span class="mytablecell4">
+				<P class="body_text"><B>Polarisabilities</B></P>
+			</span>
+			<span class="mytablecell75">
+				<P class="body_text"><BR>
+				</P>
+			</span>
+		</div>
+	{% endif %}
+</div>
+{% endblock electronictstate %}

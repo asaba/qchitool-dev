@@ -1,0 +1,18 @@
+{% extends "explore/base.html" %}
+{% block title %}
+	{{molecule.name}} ({{molecule.formula}})	
+{% endblock %}
+{% block subtitle %}General Molecule Info{% endblock %}
+{% block jmol %}
+	<script type="text/javascript">
+		jmolInitialize("/jmol/");
+		jmolApplet({{appletsize}}, "load {{URL_FOR_MOLECULE_FILES}}{{moleculefilename}}; axes on;");
+	</script>
+{% endblock jmol %}
+{% block content %}
+		{% for m in molecules%}
+			{% block molecule %}
+			{% endblock molecule %}
+		{% endfor %}
+	<a href="{{pageorigin}}">Back</a>
+{% endblock content %}

@@ -1,0 +1,22 @@
+{% extends "explore/base.html" %}
+{% block title %}
+	{{molecule.name}} ({{molecule.formula}})	
+{% endblock %}
+{% block subtitle %}Vibrational Analyses Harmonic{% endblock %}
+{% block jmol %}
+	<script type="text/javascript">
+		jmolInitialize("/jmol/");
+		jmolApplet({{appletsize}}, "load {{URL_FOR_MOLECULE_FILES}}{{moleculefilename}}");
+	</script>
+{% endblock jmol %}
+{% block content %}
+	<div class="molecule">
+			{% load humanize %}
+			{% for va in vibrationalanalysesharmonics %}
+				{% for rowtab in va.tabulatedvibrations_set.all %}
+					{% block vibration %}{% endblock vibration %}
+				{% endfor %}
+			{% endfor %}
+			<a href="{{pageorigin}}">Back</a>
+	</div>
+{% endblock content %}

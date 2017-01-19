@@ -1,0 +1,28 @@
+{% extends "explore/base.html" %}
+{% block title %}
+	File Info
+{% endblock %}
+{% block subtitle %}NWChem {{file_name}}{% endblock %}
+{% block jmol %}
+	{% if enable_jmol %}}
+	<script type="text/javascript">
+		jmolInitialize("/jmol/");
+		jmolApplet({{appletsize}}, "load {{URL_FOR_MOLECULE_FILES}}{{task.relative_file_path}}; axes on;");
+	</script>
+	{% endif %}
+{% endblock jmol %}
+{% block content %}
+
+{% if file_size > 0 %}
+	<p>{{inchi}}</p>
+	<p>{{inchikey}}</p>
+	<p>{{file_name}} : {{file_size}} Bytes</p>
+	<form action="processingscript.php" method="post">
+	<input type="submit" />
+	</form>
+{% else %}
+	<p>{{file_name}} is empty</p>
+{% endif %}
+<p><a href="/nwc_import/">Chose Other File</a></p>
+
+{% endblock content %}

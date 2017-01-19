@@ -1,0 +1,19 @@
+{% extends "explore/base.html" %}
+{% block title %}
+	Calculus Saved
+{% endblock %}
+{% block subtitle %}NWChem{% endblock %}
+{% block jmol %}
+	{% if enable_jmol %}}
+	<script type="text/javascript">
+		jmolInitialize("/jmol/");
+		jmolApplet({{appletsize}}, "load {{URL_FOR_MOLECULE_FILES}}{{task.relative_file_path}}; axes on;");
+	</script>
+	{% endif %}
+{% endblock jmol %}
+{% block content %}
+<p>Calculus Saved</p>
+{% endblock content %}
+
+
+

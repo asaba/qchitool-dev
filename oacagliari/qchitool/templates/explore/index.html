@@ -1,0 +1,15 @@
+{% extends "explore/base.html" %}
+{% block title %}
+	Molecules
+{% endblock %}
+{% block content %}
+	{% if molecules %}
+		{% for molecule in molecules %}
+			<P class="body_text"><a href="/database/molecule/{{molecule.pk}}/">{{molecule.name}} ({{molecule.formula}})</a></p>
+		{% endfor %}
+	{% else %}
+		<P class="body_text"><span style="color:red">Error. No molecules found </span></p>
+	{% endif %}
+
+{% endblock content%}
+

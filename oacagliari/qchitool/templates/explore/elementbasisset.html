@@ -1,0 +1,29 @@
+{% extends "explore/base.html" %}
+{% block title %}
+	{{molecule.name}} ({{molecule.formula}})	
+{% endblock %}
+{% block subtitle %}Atoms and Basis Sets{% endblock %}
+
+{% block content %}
+<div id="contenttext">
+	<p class="body_text" align="justify">
+		<p class="body_text" >
+			<table border="1">
+				<tr>
+					<th>#</th>
+					<th>Atom</th>
+					<th>Basis Set</th>
+				</tr>
+				{% for especiesbs in task.elementspeciesbasisset_set.all %}
+					<tr>
+						<td>{{forloop.counter}}</td>
+						<td>{{especiesbs.elementspecies.element}}</td>
+						<td>{{especiesbs.basisset.name}}</td>
+					</tr>
+				{% endfor %}
+			</table></p>
+
+<p><a href="{{pageorigin}}">Back</a>
+		</p>
+			</div>
+{% endblock content%}

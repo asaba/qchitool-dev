@@ -1,0 +1,48 @@
+{% extends "explore/base.html" %}
+{% block title %}
+	{{molecule.name}} ({{molecule.formula}})	
+{% endblock %}
+{% block subtitle %}Vibrational Analyses Harmonic{% endblock %}
+{% block jmol %}
+	<script type="text/javascript">
+		jmolInitialize("/jmol/");
+		jmolApplet({{appletsize}}, "load {{URL_FOR_MOLECULE_FILES}}{{moleculefilename}}");
+	</script>
+{% endblock jmol %}
+{% block content2 %}
+	<div id="contenttext2">
+		<p class="body_text" align="justify">
+			{% load humanize %}
+			{% for va in vibrationalanalysesharmonics %}
+				<table border="1">
+				<tr rowspan="2">
+				<th>Freq.</th>
+				<th>IR Int.</th>
+				<th  colspan="3">Alpha</th>
+				<th  colspan="3">Diff mu</th>
+				<th>Eigenvectors</th>
+				<th>View</th>
+				</tr>
+				<tr><th></th><th></th><th>A</th><th>B</th><th>C</th><th>X</th><th>Y</th><th>Z</th><th></th><th></th></tr>
+				{% for rowtab in va.tabulatedvibrations_set.all %}
+					<tr>
+					<td>{{rowtab.frequency|floatformat:roundto}}</td>
+					<td>{{rowtab.ir_intensity|floatformat:roundto}}</td>
+					<td>{{rowtab.alpha_a|floatformat:roundto}}</td>
+					<td>{{rowtab.alpha_b|floatformat:roundto}}</td>
+					<td>{{rowtab.alpha_c|floatformat:roundto}}</td>
+					<td>{{rowtab.diff_mu_x|floatformat:roundto}}</td>
+					<td>{{rowtab.diff_mu_y|floatformat:roundto}}</td>
+					<td>{{rowtab.diff_mu_z|floatformat:roundto}}</td>
+					<td><a href="/database/eigenvectors/{{moleculeid}}/{{electronicstate.pk}}/{{rowtab.pk}}/{{forloop.counter}}/">Eigenvectors</a></td>
+					<td><button onclick='JavaScript:jmolScript("model {{forloop.counter}}");jmolScript("vibration ON");'>View</button></td>
+					<!-- jmolScript("set arrow from {0 0 0} to { {{rowtab.diff_mu_x}}*100 {{rowtab.diff_mu_y}}*100 {{rowtab.diff_mu_z}}*100 }"); !-->
+					</tr>
+				{% endfor %}
+				</table>
+			
+			{% endfor %}
+			<a href="{{pageorigin}}">Back</a>
+		</p>
+	</div>
+{% endblock content2 %}

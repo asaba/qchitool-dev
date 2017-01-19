@@ -1,0 +1,96 @@
+{% extends "explore/base.html" %}
+{% block title %}
+	{{molecule.name}} ({{molecule.formula}})	
+{% endblock %}
+{% block subtitle %}{{ionisationenergy.iontype.comments}}{% endblock %}
+
+{% block content %}
+<div id="contenttext">
+				<p class="body_text" align="justify">
+{% load humanize %}
+			<p  class="body_text" >Energy from</p>
+			<p  class="body_text" >Charge: {{ionisationenergy.start_state.species.charge}}</p>
+			<p  class="body_text" >Inchi: {{ionisationenergy.start_state.species.inchi}}</p>
+			{% if ionisationenergy.start_state.species.comments %}
+				<p class="body_text" >Description: {{ionisationenergy.start_state.species.comments}}</p>
+			{% endif %}
+					<p class="body_text" ><table border="1">
+					<tr>
+					<th>Energy</th>
+					<th>Sym.</th>
+					<th>Mult.</th>
+					<th>Descr.</th>
+					<th>Min.</th>
+					<th>Theory level</th>
+					<th>XC</th>
+					<th>Elements and Basis Sets</th>
+					<th>V.A. Anar.</th>
+					<th>V.A. Har.</th>
+					</tr>
+						<tr>
+						<td>{{ionisationenergy.start_state.total_energy|floatformat:roundto}}</td>
+						<td>{{ionisationenergy.start_state.symmetry}}</td>
+						<td>{{ionisationenergy.start_state.multiplicity}}</td>
+						<td>{{ionisationenergy.start_state.description}}</td>
+						<td>{{ionisationenergy.start_state.is_minimum|yesno}}</td>
+						<td>{{ionisationenergy.start_state.task.thlevel.name}}</td>
+						<td>{{ionisationenergy.start_state.task.thlevel.xcclass.name}}</td>
+						<td><a href="/database/elementbasissets/{{molecule.pk}}/{{ionisationenergy.start_state.task.pk}}/">{{ionisationenergy.start_state.basissetshort}}</a></td>
+						<td>{% if ionisationenergy.start_state.vibrationalanalysesanarmonic_set.count %}
+								<a href="/database/vibrationalanalysesanarmonic/{{molecule.pk}}/{{ionisationenergy.start_state.pk}}/">link</a>
+							{% else %}
+								None
+							{% endif%}</td>
+						<td>{% if ionisationenergy.start_state.vibrationalanalysesharmonic_set.count %}
+								<a href="/database/vibrationalanalysesharmonic/{{molecule.pk}}/{{ionisationenergy.start_state.pk}}/">link</a>
+							{% else %}
+								None
+							{% endif%}
+						</td>   
+						</tr>
+				</table></p>
+			<p  class="body_text" >to</p>
+			<p  class="body_text" >Charge: {{ionisationenergy.ion_state.species.charge}}</p>
+			<p  class="body_text" >Inchi: {{ionisationenergy.ion_state.species.inchi}}</p>
+			{% if ionisationenergy.ion_state.species.comments %}
+				<p class="body_text" >Description: {{ionisationenergy.ion_state.species.comments}}</p>
+			{% endif %}
+					<p class="body_text" ><table border="1">
+					<tr>
+					<th>Energy</th>
+					<th>Sym.</th>
+					<th>Mult.</th>
+					<th>Descr.</th>
+					<th>Min.</th>
+					<th>Theory level</th>
+					<th>XC</th>
+					<th>Elements and Basis Sets</th>
+					<th>V.A. Anar.</th>
+					<th>V.A. Har.</th>
+					</tr>
+						<tr>
+						<td>{{ionisationenergy.ion_state.total_energy|floatformat:roundto}}</td>
+						<td>{{ionisationenergy.ion_state.symmetry}}</td>
+						<td>{{ionisationenergy.ion_state.multiplicity}}</td>
+						<td>{{ionisationenergy.ion_state.description}}</td>
+						<td>{{ionisationenergy.ion_state.is_minimum|yesno}}</td>
+						<td>{{ionisationenergy.ion_state.task.thlevel.name}}</td>
+						<td>{{ionisationenergy.ion_state.task.thlevel.xcclass.name}}</td>
+						<td><a href="/database/elementbasissets/{{molecule.pk}}/{{ionisationenergy.ion_state.task.pk}}/">{{ionisationenergy.ion_state.basissetshort}}</a></td>
+						<td>{% if ionisationenergy.ion_state.vibrationalanalysesanarmonic_set.count %}
+								<a href="/database/vibrationalanalysesanarmonic/{{molecule.pk}}/{{ionisationenergy.ion_state.pk}}/">link</a>
+							{% else %}
+								None
+							{% endif%}</td>
+						<td>{% if ionisationenergy.ion_state.vibrationalanalysesharmonic_set.count %}
+								<a href="/database/vibrationalanalysesharmonic/{{molecule.pk}}/{{ionisationenergy.ion_state.pk}}/">link</a>
+							{% else %}
+								None
+							{% endif%}
+						</td>   
+						</tr>
+				</table></p>
+				<p>Energy: {{ionisationenergy.energy|floatformat:roundto}}</p>
+		</p>
+			</div>
+{% endblock content%}

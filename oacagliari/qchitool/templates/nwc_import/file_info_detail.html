@@ -1,0 +1,196 @@
+{% extends "explore/base.html" %}
+{% block title %}
+	Import calculus
+{% endblock %}
+{% block subtitle %}NWChem{% endblock %}
+{% block jmol %}
+	{% if enable_jmol %}}
+	<script type="text/javascript">
+		jmolInitialize("/jmol/");
+		jmolApplet({{appletsize}}, "load {{URL_FOR_MOLECULE_FILES}}{{task.relative_file_path}}; axes on;");
+	</script>
+	{% endif %}
+{% endblock jmol %}
+{% block content %}
+
+
+
+
+<p><b>Calculation </p>
+{% if calculation_by_md5 %}
+	<span style="color:green">Found</span> in QChiTool DB</b></h2>
+	<h3>Tasks in QChiTool DB</h3>
+		<ul> 
+		{% for task in calculation_found_tasks_list %}
+			<li> {{task}}</li>
+		{% endfor %}
+	    </ul>
+{% else %}
+	<span style="color:red">NOT Found</span> in QChiTool DB</b></h2>
+{% endif %}
+
+<h1> <b>Calculation Found in File:</b></h1>
+{% if calculation_object %}
+	<ul> 
+		{% for sub_key, sub_value in calculation_object.items %}
+			{% if sub_value %}
+				<li> {{sub_key}}</li>
+			{% endif %}
+		{% endfor %}
+	</ul>
+{% else %}
+	<span style="color:red">Error. No calculation object built </span>
+{% endif %}
+
+<h1> <b>Tasks in file:</b></h1>
+
+{% if tasks %}
+	<form action="/nwc_import/task_info/" enctype="multipart/form-data" method="post">{% csrf_token %}
+	<ul>
+	{% for task in tasks %}
+				<li><input type="checkbox" name="task" value={{ forloop.counter0 }} /> Task {{ forloop.counter0 }}
+				<ul>
+					<li>Theory: ({{task.theorylevel.name}}){{task.theorylevel.description}}</li> 
+					<li>Operation: ({{task.task.name}}){{task.task.description}}</li>
+					<li>Molecule:
+						<p> <b>Molecule found in DB by Inchikey</b>:
+						{% if task.molecular_specie.pk %}
+							<span style="color:green">Yes</span>
+						{% else %}
+							<span style="color:red">No</span>
+						{% endif %}
+						</p>
+						<ul>
+							<li>Formula: {{task.molecular_specie.formula}}</li>
+							<li>Inchi: {{task.molecular_specie.inchi}}</li>
+							<li>InchiKey: {{task.molecular_specie.inchikey}}</li>
+							<li>Aromatic Cycles: {{task.molecular_specie.aromatic_cycles}}</li>
+							<li>Charge: {{task.molecular_specie.charge}}</li>
+							<li>Geometry (CML): {{task.moleculeinfo.geometries.cml.content}}</li>
+							
+						</ul>
+					</li>
+				</ul>
+				</li>
+	{% endfor %}
+	</ul>
+
+	<input type="submit" name = "selected_action" value="Cancel">
+	<input type="submit" name = "selected_action" value="Save">
+	
+	</form>
+{% else %}
+	<span style="color:red">Error. No tasks found in file</span>
+{% endif %}
+
+{% if parsing_result %}
+<h1>File Information</h1>
+{%for row in parsing_result%}
+	<ul>
+	{% if row.section_object %}
+		<li><b>{{row.section_class}}</b></li>
+		{% if row.section_object.values %}
+			{% for key, value in row.section_object.values.items %}
+				<li> {{key}} :
+				{% if key in frd %}
+					<ul>
+					{% for sub_key, sub_value in value.items %}
+						<li> {{sub_key}} : {{sub_value}}</li>
+					{% endfor %}
+					</ul>
+				{% else %}
+					{%if key in frl %}
+						<ul>
+						{% for sub_value in value %}
+							<li> {{sub_value}} </li>
+						{% endfor %}
+						</ul>
+					{% else %}
+						{{value}}
+					{% endif%}
+				{% endif %}
+				 </li>
+			{% endfor %}
+		{% else %}
+			<li>{{row.section_object}}</li>
+		{% endif %} 
+	{% endif%}
+	{% if row.list_of_subsections %} 
+		{% for sub_row in row.list_of_subsections %}
+			<ul>
+			{% if sub_row.section_object %}
+					<li><b>{{sub_row.section_class}}</b></li> 
+					{% if sub_row.section_object.values %}
+						{% for key, value in sub_row.section_object.values.items %}
+							<li> {{key}} :
+							{% if key in frd %}
+								<ul>
+								{% for sub_key, sub_value in value.items %}
+									<li> {{sub_key}} : {{sub_value}} </li>
+								{% endfor %}
+								</ul>
+							{% else %}
+								{%if key in frl %}
+									<ul>
+										{% for sub_value in value %}
+											<li> {{sub_value}} </li>
+										{% endfor %}
+									</ul>
+								{% else %}
+										{{value}}
+								{% endif%}
+							{% endif %}
+				 			</li>
+						{% endfor %}
+					{% else %}
+						<li>{{sub_row.section_object}}</li>
+					{% endif %} 
+			{% endif%}	
+			{% if sub_row.list_of_subsections %} 
+				{% for sub_sub_row in sub_row.list_of_subsections %}
+					<ul>
+					{% if sub_sub_row.section_object %}
+						<li><b>{{sub_sub_row.section_class}}</b></li>
+						{% if sub_sub_row.section_object.values %}
+							{% for key, value in sub_sub_row.section_object.values.items %}
+								<li> {{key}} :
+								{% if key in frd %}
+									<ul>
+									{% for sub_key, sub_value in value.items %}
+										<li> {{sub_key}} : {{sub_value}} </li>
+									{% endfor %}
+									</ul>
+								{% else %}
+									{%if key in frl%}
+									<ul>
+										{% for sub_value in value %}
+											<li> {{sub_value}} </li>
+										{% endfor %}
+									</ul>
+									{% else %}
+											{{value}}
+									{% endif%}
+									
+								{% endif %}
+				 			</li>
+							{% endfor %}
+						{% else %}
+							<li>{{sub_sub_row.section_object}}</li>
+						{% endif %} 
+					{% endif%}
+					</ul>
+				{% endfor %}
+			{% endif %}
+			</ul>
+		{% endfor %}
+	{% else %}
+		<p>No list_of_subsections</p>
+	{% endif%}
+	</ul>
+{%endfor%}
+
+{%else%}
+	<p>Error. No parsing</p>
+{% endif %}
+
+{% endblock %}

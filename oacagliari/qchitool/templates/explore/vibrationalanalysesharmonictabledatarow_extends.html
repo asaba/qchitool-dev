@@ -1,0 +1,20 @@
+{% extends "explore/base.html" %}
+{% block title %}
+	{{molecule.name}} ({{molecule.formula}})	
+{% endblock %}
+{% block subtitle %}Vibrational Analyses Harmonic - Table Data Row{% endblock %}
+{% block jmol %}
+	<script type="text/javascript">
+		jmolInitialize("/jmol/");
+		jmolApplet({{appletsize}}, "load {{URL_FOR_MOLECULE_FILES}}{{moleculefilename}}");
+	</script>
+{% endblock jmol %}
+{% block content %}
+	<p  class="body_text" >Eigenvectors</p>
+	<div class="electronicstate">
+		{% for v in eigenvectors %}
+			{% block vector %}{% endblock vector %}
+		{% endfor %}
+	</div>
+	<a href="{{pageorigin}}">Back</a>
+{% endblock content %}

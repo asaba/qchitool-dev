@@ -1,0 +1,65 @@
+{% extends "explore/base.html" %}
+{% block title %}
+	Elements Info
+{% endblock %}
+{% block subtitle %}NWChem{% endblock %}
+{% block jmol %}
+	{% if enable_jmol %}}
+	<script type="text/javascript">
+		jmolInitialize("/jmol/");
+		jmolApplet({{appletsize}}, "load {{URL_FOR_MOLECULE_FILES}}{{task.relative_file_path}}; axes on;");
+	</script>
+	{% endif %}
+{% endblock jmol %}
+{% block content %}
+
+{% if atoms %}	
+	<hl>
+	{% for atom in atoms %}
+		<li>Index: {{ forloop.counter0 }}</li>
+		<li>Atom found in DB
+		{% if atom.1 %}
+			<span style="color:green">Yes - {{atom.1}}</span>
+		{%else%}
+			<span style="color:red">No</span>
+		{%endif%}</li>
+        <ul>
+        	<li>Element Name: 
+			{% if atom.1 %}
+				{{ atom.1.name }}
+			{%else%}
+				{{ atom.0.name }}
+			{%endif%}</li>
+			<li>Element Symbol: 
+			{% if atom.1 %}
+				{{ atom.1.symbol }}
+			{%else%}
+				{{ atom.0.symbol }}
+			{%endif%}</li>
+			<li>Element Atomic Number: 
+			{% if atom.1 %}
+				{{ atom.1.atomic_number }}
+			{%else%}
+				{{ atom.0.atomic_number }}
+			{%endif%}</li>
+			<li>Element Group: 
+			{% if atom.1 %}
+				{{ atom.1.element_group }}
+			{%else%}
+				{{ atom.0.element_group }}
+			{%endif%}</li>
+			<li>Element Standard Atomic Weight: 
+			{% if atom.1 %}
+				{{ atom.1.standard_atomic_weight }}
+			{%else%}
+				{{ atom.0.standard_atomic_weight }}
+			{%endif%}</li>
+        </ul>
+		{% endfor %}
+	</hl>
+{% endif %}
+<A HREF="javascript:history.go(-1)">
+Return to calculi Info
+</A>
+
+{% endblock content %}

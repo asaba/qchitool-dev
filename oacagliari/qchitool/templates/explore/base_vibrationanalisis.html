@@ -1,0 +1,71 @@
+{% extends "explore/base_energy.html" %}
+{% block vibration %}
+<div class="electronicstate">
+	<div class="electronicstatehead">
+		<div class="mytablerow">
+			<span class="mytablecell3">
+				<P class="body_text"><B>Frequency<br>({{frequencyunit}})</B><br>{{rowtab.frequency|floatformat:roundto}}</P>
+			</span>
+			<span class="mytablecell3">
+				<P class="body_text"><B>IR Intesity<br>({{intensityunit}})</B><br>{{rowtab.ir_intensity|floatformat:roundto}}</P>
+			</span>
+			<span class="mytablecell3">
+				<P class="body_text">
+					<a href="/database/eigenvectors/{{moleculeid}}/{{es.pk}}/{{va.pk}}/{{rowtab.pk}}/">Eigenvectors</a><br>
+					<button onclick="JavaScript:jmolScript('model {{forloop.counter}}');jmolScript('vibration ON');">
+						Animate
+					</button>
+				</P>
+			</span>
+		</div>
+	</div>  
+	<div class="electronicstatebody">
+		{% if rowtab.alpha_a or rowtab.alpha_b or rowtab.alpha_c %}
+			<div class="mytablerow">
+				<span class="mytablecell3">
+					<P class="body_text"><B>Alpha A<br>({{rotationalunit}})</B><br>{{rowtab.alpha_a|floatformat:roundto}}</P>
+				</span>
+				<span class="mytablecell3">
+					<P class="body_text"><B>Alpha B<br>({{rotationalunit}})</B><br>{{rowtab.alpha_b|floatformat:roundto}}</P>
+				</span>
+				<span class="mytablecell3">
+					<P class="body_text"><B>Alpha C<br>({{rotationalunit}})</B><br>{{rowtab.alpha_c|floatformat:roundto}}</P>
+				</span>
+			</div>  
+		{% endif %}
+		<div class="mytablerow">
+			<span class="mytablecell3">
+				<P class="body_text"><B>Diff mu X<br>({{muunit}})</B><br>{{rowtab.diff_mu_x|floatformat:roundto}}</P>
+			</span>
+			<span class="mytablecell3">
+				<P class="body_text"><B>Diff mu Y<br>({{muunit}})</B><br>{{rowtab.diff_mu_y|floatformat:roundto}}</P>
+			</span>
+			<span class="mytablecell3">
+				<P class="body_text"><B>Diff mu Z<br>({{muunit}})</B><br>{{rowtab.diff_mu_z|floatformat:roundto}}</P>
+			</span>
+		</div>   
+	</div>
+</div>
+{% if rowtab.eigenvectorsgroup %}
+	<p  class="body_text" >Eigenvectors</p>
+	<div class="electronicstate">
+		<div class="mytablerow">
+			<span class="mytablecell4">
+				<P class="body_text">#</P>
+			</span>
+			<span class="mytablecell4">
+				<P class="body_text"><B>X</B></P>
+			</span>
+			<span class="mytablecell4">
+				<P class="body_text"><B>Y</B></P>
+			</span>
+			<span class="mytablecell4">
+				<P class="body_text"><B>Z</B></P>
+			</span>
+		</div>
+		{% for v in rowtab.eigenvectorsgroup %}
+			{% block vector %}{% endblock vector %}
+		{% endfor %}
+	</div>
+{% endif %}
+{% endblock vibration %}

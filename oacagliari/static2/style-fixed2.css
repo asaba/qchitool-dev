@@ -1,0 +1,314 @@
+body{margin:0}/* for ie mac*/
+/* commented backslash hack v2 \*/ 
+html, body{height:100%;padding:0} 
+body {min-width:800px}
+* html, * html body{
+	overflow:hidden;
+	padding:50px 0;
+	margin:-50px 0;
+	padd\ing:0;
+	ma\rgin:0;
+}
+* html #outer { 
+	text-align:center;
+	voice-family: "\"}\""; voice-family:inherit; 
+}
+* html #outer { text-align:left;}
+* html #outer { 
+	overflow:auto;
+	height:99.9%;
+	voice-family: "\"}\""; voice-family:inherit; 
+}
+* html #contain-all{
+	text-align:center;
+	position:absolute;
+	overflow:auto;
+	width:100%;
+	height:100%;
+	z-index:1;
+}
+
+
+/* end hack */ 
+
+#top-bar{
+	position:absolute;/* ie6 will treat this as fixed because of a bug where overflow:auto is set on a parent */
+	top:0px;
+	left:0px;
+	height:auto;
+	width:100%;
+	margin:0;
+	padding:0;
+	z-index:999;
+	overflow:hidden;
+}
+#topbar-inner, #footer-inner {
+	height:100px;
+	background:white;
+	text-align:center;/* for ie5*/
+	
+}
+
+/* mac hide - reduce page to allow the scrollbar to remain visible \*/
+* html #topbar-inner,* html #footer-inner {margin-right:17px;}
+/* end hide*/
+
+#footer{
+	position:absolute;
+	bottom:0;
+	width:100%;
+	height:50px;
+	z-index:999;
+	
+}
+.spacer {height:120px}/* same height as footer/header to preserve space*/
+p{margin-top:0}
+#side-bar{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	position:absolute;
+	top:120px;
+	padding: 5px;
+	height:200px;
+	left:50%;
+	margin-left:-410px;
+	width:100px;
+	border:1px solid #000;
+	background:#0E53A7;
+}
+#side-bar a{
+	font-weight: bold;
+	color:white;
+	text-decoration:none;
+}
+#side-bar a:hover{
+	text-decoration:underline;
+}
+#jmolbox{
+	position:absolute;
+	top:120px;
+	height:auto;
+	right:50%;
+	margin-right:-400px;
+	width:280px;
+	border:1px solid #000;
+	background:green;
+}
+
+.body_text {	
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	text-align: center;
+}
+
+html>body #top-bar,html>body #footer,html>body #side-bar, html>body #jmolbox{position:fixed}/* for moz/opera and others*/
+
+.title_blue {
+	font-family: Verdana, Arial, Helvetica, sans-serif; 
+	font-weight: bold; 
+	font-size: 26px; 
+	color: #DDDDDD; 
+	text-align: center;
+	}
+
+.subtitle_gray {	font-family:Verdana, Arial, Helvetica, sans-serif;	
+	font-weight: bold;
+	font-size: 14px;
+	color: #CCCCCC;
+	text-align: center;
+}
+
+.mid-content{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	width:800px;
+	margin:auto;
+	background:#04346C;
+	border-radius: 20px;
+	color: white;
+	height:50px;
+}
+.mid-content a{
+	font-weight: bold;
+	color:white;
+	text-decoration:none;
+}
+.mid-content a:hover{
+	text-decoration:underline;
+}
+#inner{
+	width:800px;
+	margin:auto;
+	text-align:left;
+}
+
+#main-content{
+	background:#6899D3;
+	margin-left:110px;
+	margin-right:300px;
+	padding: 5px;
+	padding-bottom: 100px;
+}
+
+
+#right {
+float:right;
+width:174px;
+background:orange;
+}
+
+/*COMPANY NAME IN HEADER*/
+#companyname {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color: white;
+	font-size: 36px;
+	font-weight: bold;
+	background:blue;
+	width:800px;
+	margin:auto;
+	border-radius: 20px;
+	padding: 5px;
+	text-align:center;
+}
+
+/*MENU IN HEADER*/
+#menu{
+	position:absolute;
+	bottom: 20px;
+	right: 30px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+}
+#menu a{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	color:white;
+	text-decoration:none;
+}
+#menu a:hover{
+	text-decoration:underline;
+}
+
+
+
+.molecule {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	padding: 10px;
+	background: orange;
+	border-radius: 20px;
+	margin-bottom: 5px;
+}
+
+.moleculehead {
+	font-size: 12px;
+	cursor: pointer;
+	}
+	
+.moleculebody {
+	font-size: 11px;
+	}
+
+.electronicstate {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	padding: 8px;
+	background: red;
+	border-radius: 20px;
+	margin-bottom: 5px;
+}
+.electronicstatehead{
+	font-size: 12px;
+	cursor: pointer;
+	}
+	
+.electronicstatebody{
+	font-size: 11px;
+	}
+
+.element {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	padding: 5px;
+	background: purple;
+	border-radius: 20px;
+	margin-bottom: 5px;
+}
+.elementhead{
+	font-size: 12px;
+	cursor: pointer;
+	}
+	
+.elementbody{
+	font-size: 11px;
+	}
+
+.mytablerow {
+	width: 100%;
+	text-align: center;
+	}
+
+.mytablecell1 {
+	min-width: 99%;
+	max-width: 99%;
+	display: inline-block;
+	box-sizing: border-box;
+}
+
+.mytablecell2 {
+	min-width: 49%;
+	max-width: 49%;
+	display: inline-block;
+	box-sizing: border-box;
+}
+.mytablecell3 {
+	min-width: 32%;
+	max-width: 32%;
+	display: inline-block;
+	box-sizing: border-box;
+}
+.mytablecell4 {
+	min-width: 24%;
+	max-width: 24%;
+	display: inline-block;
+	box-sizing: border-box;
+}
+
+.mytablecell5 {
+	min-width: 19%;
+	max-width: 19%;
+	display: inline-block;
+	box-sizing: border-box;
+}
+
+.mytablecell6 {
+	min-width: 15%;
+	max-width: 15%;
+	display: inline-block;
+	box-sizing: border-box;
+}
+
+.mytablecell75 {
+	min-width: 74%;
+	max-width: 74%;
+	display: inline-block;
+	box-sizing: border-box;
+}
+
+/* ToolTip Box */
+
+a:hover { position: relative; }
+
+a span{
+	display: none;	
+	}
+a:hover span {
+display:block;
+position: absolute;
+top: 1.5em;
+z-index: 1;
+background: white;
+color:black;
+}

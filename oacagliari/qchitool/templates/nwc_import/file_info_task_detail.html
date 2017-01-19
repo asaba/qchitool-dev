@@ -1,0 +1,127 @@
+{% extends "explore/base.html" %}
+{% block title %}
+	Tasks information
+{% endblock %}
+{% block subtitle %}NWChem - Information about tasks found in import file{% endblock %}
+{% block jmol %}
+	{% if enable_jmol %}}
+	<script type="text/javascript">
+		jmolInitialize("/jmol/");
+		jmolApplet({{appletsize}}, "load {{URL_FOR_MOLECULE_FILES}}{{task.relative_file_path}}; axes on;");
+	</script>
+	{% endif %}
+{% endblock jmol %}
+{% block content %}
+
+<ul>
+{% for result in results %}
+	<li>{{result.1}}</li>
+	<ul>
+		<li><b>{{result.0.section_class}}</b></li>
+		{% if result.0.section_object.values %}
+			{% for key, value in result.0.section_object.values.items %}
+				<li> {{key}} :
+				{% if key in frd %}
+					<ul>
+					{% for sub_key, sub_value in value.items %}
+						<li> {{sub_key}} : {{sub_value}}</li>
+					{% endfor %}
+					</ul>
+				{% else %}
+					{%if key in frl %}
+						<ul>
+						{% for sub_value in value %}
+							<li> {{sub_value}} </li>
+						{% endfor %}
+						</ul>
+					{% else %}
+						{{value}}
+					{% endif%}
+				{% endif %}
+				 </li>
+			{% endfor %}
+		{% else %}
+			<li>{{result.0.section_object}}</li>
+		{% endif %} 
+	{% if result.0.list_of_subsections %} 
+		{% for sub_row in result.0.list_of_subsections %}
+			<ul>
+			{% if sub_row.section_object %}
+					<li><b>{{sub_row.section_class}}</b></li> 
+					{% if sub_row.section_object.values %}
+						{% for key, value in sub_row.section_object.values.items %}
+							<li> {{key}} :
+							{% if key in frd %}
+								<ul>
+								{% for sub_key, sub_value in value.items %}
+									<li> {{sub_key}} : {{sub_value}} </li>
+								{% endfor %}
+								</ul>
+							{% else %}
+								{%if key in frl %}
+									<ul>
+										{% for sub_value in value %}
+											<li> {{sub_value}} </li>
+										{% endfor %}
+									</ul>
+								{% else %}
+										{{value}}
+								{% endif%}
+							{% endif %}
+				 			</li>
+						{% endfor %}
+					{% else %}
+						<li>{{sub_row.section_object}}</li>
+					{% endif %} 
+			{% endif%}	
+			{% if sub_row.list_of_subsections %} 
+				{% for sub_sub_row in sub_row.list_of_subsections %}
+					<ul>
+					{% if sub_sub_row.section_object %}
+						<li><b>{{sub_sub_row.section_class}}</b></li>
+						{% if sub_sub_row.section_object.values %}
+							{% for key, value in sub_sub_row.section_object.values.items %}
+								<li> {{key}} :
+								{% if key in frd %}
+									<ul>
+									{% for sub_key, sub_value in value.items %}
+										<li> {{sub_key}} : {{sub_value}} </li>
+									{% endfor %}
+									</ul>
+								{% else %}
+									{%if key in frl%}
+									<ul>
+										{% for sub_value in value %}
+											<li> {{sub_value}} </li>
+										{% endfor %}
+									</ul>
+									{% else %}
+											{{value}}
+									{% endif%}
+									
+								{% endif %}
+				 			</li>
+							{% endfor %}
+						{% else %}
+							<li>{{sub_sub_row.section_object}}</li>
+						{% endif %} 
+					{% endif%}
+					</ul>
+				{% endfor %}
+			{% endif %}
+			</ul>
+		{% endfor %}
+	{% else %}
+		<p>No list_of_subsections</p>
+	{% endif%}
+	</ul>
+{%endfor%}
+
+</ul>
+	<form action="/nwc_import/to_save/" enctype="multipart/form-data" method="post">{% csrf_token %}
+
+	<input type="submit" name = "selected_action" value="Cancel">
+	<input type="submit" name = "selected_action" value="Save">
+	</form>
+
+{% endblock content %}

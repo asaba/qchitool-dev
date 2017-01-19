@@ -1,0 +1,30 @@
+{% extends "explore/base.html" %}
+{% block title %}
+	{{molecule.name}} ({{molecule.formula}})	
+{% endblock %}
+{% block subtitle %}General Molecule Info{% endblock %}
+{% block content %}
+		{% for m in molecules %}
+			<div class="molecule">
+        		<P class="body_text"><b>Charge:</b> {{m.charge}}</P>
+        		<P class="body_text"><B>Inchi:</B>{{m.inchi}}</P>
+				{% if m.comments %}
+					<p class="body_text" ><b>Description:</b> {{m.comments}}</p>
+				{% endif %}
+				{% if m.electronicstates %}
+					<p class="body_text" > No electronic states</p>
+				{% else %}
+					<p class="body_text" >Electronic States</p>
+					{% for es in m.estmp %}
+						{% block electronictstate %}{% endblock electronictstate %}
+        			{% endfor %} {% comment %} electronicstate {% endcomment %}
+				{% endif %}
+			</div>
+		{% endfor %} {% comment %} molecule {% endcomment %}
+{% endblock content%}
+{% block jmol %}
+	<script type="text/javascript">
+		jmolInitialize("/jmol/");
+		jmolApplet({{appletsize}}, "load {{URL_FOR_MOLECULE_FILES}}{{moleculefilename}}");
+	</script>
+{% endblock jmol %}

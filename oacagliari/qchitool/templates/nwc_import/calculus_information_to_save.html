@@ -1,0 +1,296 @@
+{% extends "explore/base.html" %}
+{% block title %}
+	Save calculus
+{% endblock %}
+{% block subtitle %}NWChem{% endblock %}
+{% block jmol %}
+	{% if enable_jmol %}}
+	<script type="text/javascript">
+		jmolInitialize("/jmol/");
+		jmolApplet({{appletsize}}, "load {{URL_FOR_MOLECULE_FILES}}{{task.relative_file_path}}; axes on;");
+	</script>
+	{% endif %}
+{% endblock jmol %}
+{% block content %}
+
+{% if tasks %}
+	<form action="/nwc_import/save/" enctype="multipart/form-data" method="post">{% csrf_token %}
+	
+	<div class="molecule">
+		<div class="moleculehead">
+			<div class="mytablerow">
+				<span class="mytablecell1">
+					<P class="body_text"><B>Calculation</B></P>
+				</span>
+			</div>     
+		</div>
+		<div class="moleculebody">		
+			{% for field in tasks.calculation %}
+				<div class="mytablerow">
+					<span class="mytablecell1">
+						<P class="body_text">{{ field.label_tag }}</P>
+						<P class="body_text">{{ field }}</P>
+					</span>
+				</div>  
+			{% endfor %}
+		</div>
+	</div>	
+	<div class="molecule">
+		<div class="moleculehead">
+			<div class="mytablerow">
+				<span class="mytablecell1">
+					<P class="body_text"><B>Chemistry Code</B></P>
+				</span>
+			</div>     
+		</div>
+		<div class="moleculebody">		
+			{% for field in tasks.chemistrycode %}
+				<div class="mytablerow">
+					<span class="mytablecell1">
+						<P class="body_text">{{ field.label_tag }}</P>
+						<P class="body_text">{{ field }}</P>
+					</span>
+				</div>  
+			{% endfor %}
+		</div>
+	</div>	
+
+	{% for t in tasks.tasks %}
+	<div class="molecule">
+		<div class="moleculehead">
+			<div class="mytablerow">
+				<span class="mytablecell1">
+					<P class="body_text"><B>Task {{forloop.counter0}}</B></P>
+				</span>
+			</div>     
+		</div>
+		<div class="moleculebody">		
+			{% for field in t %}
+				<div class="mytablerow">
+					<span class="mytablecell1">
+						<P class="body_text">{{ field.label_tag }}</P>
+						<P class="body_text">{{ field }}</P>
+					</span>
+				</div>  
+			{% endfor %}
+				<div class="electronicstate">
+					<div class="electronicstatehead">
+						<div class="mytablerow">
+							<span class="mytablecell1">
+								<P class="body_text"><B>Theory Level {{forloop.counter0}}</B></P>
+							</span>
+						</div>     
+					</div>
+					<div class="electronicstatebody">		
+						{% for field in t.theorylevel %}
+							<div class="mytablerow">
+								<span class="mytablecell1">
+									<P class="body_text">{{ field.label_tag }}</P>
+									<P class="body_text">{{ field }}</P>
+								</span>
+							</div>  
+						{% endfor %}
+					</div>
+				</div>	
+				<div class="electronicstate">
+					<div class="electronicstatehead">
+						<div class="mytablerow">
+							<span class="mytablecell1">
+								<P class="body_text"><B>Molecular Species {{forloop.counter0}}</B></P>
+							</span>
+						</div>     
+					</div>
+					<div class="electronicstatebody">		
+						{% for field in t.molecularspecie %}
+							<div class="mytablerow">
+								<span class="mytablecell1">
+									<P class="body_text">{{ field.label_tag }}</P>
+									<P class="body_text">{{ field }}</P>
+								</span>
+							</div>  
+						{% endfor %}
+					</div>
+				</div>	
+				<div class="electronicstate">
+					<div class="electronicstatehead">
+						<div class="mytablerow">
+							<span class="mytablecell1">
+								<P class="body_text"><B>Electronic State {{forloop.counter0}}</B></P>
+							</span>
+						</div>     
+					</div>
+					<div class="electronicstatebody">		
+						{% for field in t.electonicstate %}
+							<div class="mytablerow">
+								<span class="mytablecell1">
+									<P class="body_text">{{ field.label_tag }}</P>
+									<P class="body_text">{{ field }}</P>
+								</span>
+							</div>  
+						{% endfor %}
+					</div>
+				</div>	
+				{% if t.dipolemoment %}
+					<div class="electronicstate">
+						<div class="electronicstatehead">
+							<div class="mytablerow">
+								<span class="mytablecell1">
+									<P class="body_text"><B>Dipole Moment {{forloop.counter0}}</B></P>
+								</span>
+							</div>     
+						</div>
+						<div class="electronicstatebody">		
+							{% for field in t.dipolemoment %}
+								<div class="mytablerow">
+									<span class="mytablecell1">
+										<P class="body_text">{{ field.label_tag }}</P>
+										<P class="body_text">{{ field }}</P>
+									</span>
+								</div>  
+							{% endfor %}
+						</div>
+					</div>	
+            			{% endif %}
+				<div class="electronicstate">
+					<div class="electronicstatehead">
+						<div class="mytablerow">
+							<span class="mytablecell1">
+								<P class="body_text"><B>Geometry {{forloop.counter0}}</B></P>
+							</span>
+						</div>     
+					</div>
+					<div class="electronicstatebody">		
+						{% for field in t.geometry %}
+							<div class="mytablerow">
+								<span class="mytablecell1">
+									<P class="body_text">{{ field.label_tag }}</P>
+									<P class="body_text">{{ field }}</P>
+								</span>
+							</div>  
+						{% endfor %}
+					</div>
+				</div>	
+
+
+				
+				<div class="electronicstate">
+					<div class="electronicstatehead">
+						<div class="mytablerow">
+							<span class="mytablecell1">
+								<P class="body_text"><B>Elements and Basis Sets {{forloop.counter0}}</B></P>
+							</span>
+						</div>     
+					</div>
+					<div class="electronicstatebody">	
+						{% for e in t.elements %}
+							<div class="element">
+								<div class="elementhead">
+									<div class="mytablerow">
+										<span class="mytablecell1">
+											<P class="body_text"><B>Element and Basis Sets {{forloop.counter0}}</B></P>
+										</span>
+									</div>     
+								</div>
+								<div class="elementbody">		
+									<div class="mytablerow">
+										<span class="mytablecell1">
+											<P class="body_text"><B>Element {{forloop.counter0}}</B></P>
+										</span>
+									</div>  
+									{% for field in e.element %}
+										<div class="mytablerow">
+											<span class="mytablecell1">
+												<P class="body_text">{{ field.label_tag }}</P>
+												<P class="body_text">{{ field }}</P>
+											</span>
+										</div>  
+									{% endfor %}
+									<div class="mytablerow">
+										<span class="mytablecell1">
+											<P class="body_text"><B>Basis Sets {{forloop.counter0}}</B></P>
+										</span>
+									</div>  
+									{% for field in e.basisset %}
+										<div class="mytablerow">
+											<span class="mytablecell1">
+												<P class="body_text">{{ field.label_tag }}</P>
+												<P class="body_text">{{ field }}</P>
+											</span>
+										</div>  
+									{% endfor %}
+								</div>
+							</div>	
+
+
+						{% endfor %}
+					</div>
+				</div>	
+            			
+				{% if t.vibrationalanalysesarmonic  %}
+					{% if t.rotationalconstant %}
+						<div class="electronicstate">
+							<div class="electronicstatehead">
+								<div class="mytablerow">
+									<span class="mytablecell1">
+										<P class="body_text"><B>Rotational Constants {{forloop.counter0}}</B></P>
+									</span>
+								</div>     
+							</div>
+							<div class="electronicstatebody">		
+								{% for field in t.rotationalconstant %}
+									<div class="mytablerow">
+										<span class="mytablecell1">
+											<P class="body_text">{{ field.label_tag }}</P>
+											<P class="body_text">{{ field }}</P>
+										</span>
+									</div>  
+								{% endfor %}
+							</div>
+						</div>	
+					{% endif %}
+					<div class="electronicstate">
+						<div class="electronicstatehead">
+							<div class="mytablerow">
+								<span class="mytablecell1">
+									<P class="body_text"><B>Vibrational Analisys Armonic {{forloop.counter0}}</B></P>
+								</span>
+							</div>     
+						</div>
+						<div class="electronicstatebody">		
+							{% for field in t.vibrationalanalysesarmonic %}
+								<div class="mytablerow">
+									<span class="mytablecell1">
+										<P class="body_text">{{ field.label_tag }}</P>
+										<P class="body_text">{{ field }}</P>
+									</span>
+								</div>  
+							{% endfor %}
+							{% for v in t.tabulatedvibrations %}
+								<div class="mytablerow">
+									<span class="mytablecell1">
+										<P class="body_text"><B>Tabulated Vibration {{forloop.counter0}}</B></P>
+									</span>
+								</div>   
+								{% for field in v %}
+									<div class="mytablerow">
+										<span class="mytablecell1">
+											<P class="body_text">{{ field.label_tag }}</P>
+											<P class="body_text">{{ field }}</P>
+										</span>
+									</div>  
+								{% endfor %}  
+							{% endfor %}
+						</div>
+					</div>	
+					  
+				{% endif %}
+		</div>
+	</div>	
+   {% endfor %}
+<input type="submit" value="Save" />
+</form>
+{% else %}
+	<p>No information found</p>
+{% endif %}
+
+{% endblock %}

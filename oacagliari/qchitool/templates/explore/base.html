@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<script type="text/javascript" src="/jmol/Jmol.js"></script>
+	<script type="text/javascript" src="/static2/jquery182.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function()
+			{
+			  //hide the all of the element with class moleculebody or electronicstatebody or elementbody
+			  $(".moleculebody").hide();
+			  $(".electronicstatebody").hide();
+			  $(".elementbody").hide();
+			  //toggle the componenet with moleculebody or electronicstatebody or elementbody
+			  $(".moleculehead").click(function()
+			  {
+			    $(this).next(".moleculebody").slideToggle(600);
+			  });
+			  $(".electronicstatehead").click(function()
+			  {
+			    $(this).next(".electronicstatebody").slideToggle(600);
+			  });
+			  $(".elementhead").click(function()
+			  {
+			    $(this).next(".elementbody").slideToggle(600);
+			  });
+			});
+	</script>
+	<meta name="author" content="OAC (www.oa-cagliari.inaf.it)" />
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<link rel="stylesheet" href="/static2/style-fixed2.css" type="text/css" />
+	<!-- Date: 2012-09-19 -->
+	<title>Theoretical spectral database of polycyclic aromatic hydrocarbons</title>
+</head>
+<body>
+<div id="side-bar"> 
+	<p><a href="http://www.oa-cagliari.inaf.it">OA Cagliari INAF </a></p>
+	<p><a href="http://www.vamdc.eu">VAMDC </a></p>
+	<p><a href="/nwc_import/">Import NWChem Calculus</a></p>
+	<p><a href="/gaussian_import/">Import Gaussian Calculus</a></p>
+	<p><a href="/octopus_import/">Import Octopus Calculus</a></p>
+	<p><a href="/utility/">Big Fix Utility</a></p>
+	<p><a href="/admin/">Administration</a></p>
+	
+	
+</div>
+<div id="jmolbox"> 
+{% block jmol %}<img src="/static2/pahs.gif" alt="Polycyclic aromatic hydrocarbons" height="280" width="280">{% endblock jmol %}
+</div>
+<div id="outer"> 
+  <div id="contain-all"> 
+    <div class="spacer"></div>
+    <div id="inner"> 
+      <div id="main-content"> 
+      	<div class="title_blue">{% block title %}{% endblock title%}</div><br />
+				<div class="subtitle_gray">{% block subtitle %}{% endblock subtitle%}</div><br />
+        {% block content %}{% endblock content %}
+      </div>
+    </div>
+  </div>
+</div>
+<div id="top-bar"> 
+  <div id="topbar-inner"> 
+	<div id="companyname" align="left">Theoretical spectral database of polycyclic aromatic hydrocarbons</div>
+  </div>
+</div>
+<div id="footer"> 
+  <div id="footer-inner"> 
+    <div class="mid-content"><a href="#">Home</a> | 
+		<a href="#">About Us</a> | 
+		<a href="/">PAH Database</a> | 
+		<a href="#">Our Services</a> | 
+		<a href="#">Contact Us</a> </div>
+  </div>
+</div>
+</body>
+
+</html>
